@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1366 768" style="enable-background:new 0 0 1366 768;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#620C9B;}
+	.st1{fill:#FFFFFF;}
+	.st2{font-family:'Verdana-Bold';}
+	.st3{font-size:54.0758px;}
+</style>
+<g id="Calque_2_1_">
+	<rect x="216" y="86" class="st0" width="342" height="177.6"/>
+</g>
+<g id="Calque_1_1_">
+	<g>
+		<g>
+			<g>
+				<path class="st1" d="M314.7,228.9h-58.3c-14.8,0-26.8-12-26.8-26.8v-58.3c0-14.8,12-26.8,26.8-26.8h58.3
+					c14.8,0,26.8,12,26.8,26.8V202C341.5,216.9,329.5,228.9,314.7,228.9z"/>
+			</g>
+		</g>
+		<g>
+			<text transform="matrix(0.6323 0 0 1 348.5205 194.7472)" class="st1 st2 st3">StreamOn</text>
+		</g>
+		<g>
+			<path class="st0" d="M256.5,139.1v63.6c0,3.4,4.4,5.4,7.6,3.6l55.1-31.4c2.9-1.7,3-5.4,0-7.1c-18.4-10.8-36.8-21.5-55.1-32.3
+				C261,133.7,256.5,135.7,256.5,139.1z"/>
+		</g>
+		<g id="Calque_4">
+			<path class="st1" d="M247.5,193.9c9.3-5.3,18.7-10.7,28-16c14.3-6,28.7-12,43-18c1.3,1.7,2.7,3.3,4,5c-12.6,3.4-27.8,8.7-44,17
+				c-12.1,6.2-22.5,12.8-31,19C247.5,198.5,247.5,196.2,247.5,193.9z"/>
+			<polygon class="st1" points="252.5,201.9 277.5,186.9 254.5,210.9 			"/>
+			<polygon class="st1" points="268.5,135.9 262.5,148 252.5,167.9 275.5,135.9 			"/>
+			<polygon class="st1" points="279.5,138.9 263.5,174.9 311.5,149.9 300.5,145.9 275.5,163.9 286.5,136.9 			"/>
+		</g>
+	</g>
+</g>
+</svg>
