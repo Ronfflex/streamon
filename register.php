@@ -1,7 +1,13 @@
 <?php 
-require_once 'inc/db.php';
 require_once 'inc/functions.php';
 session_start();
+reconnect_from_cookie();
+if(isset($_SESSION['auth'])){
+  header('Location: index.php');
+  exit();
+}
+require_once 'inc/db.php';
+
 if(!empty($_POST)) {
   
   $errors = array();
@@ -58,11 +64,6 @@ if(!empty($_POST)) {
     }
     if(isset($_POST['login'])){
       // LOGIN
-      reconnect_from_cookie();
-      if(isset($_SESSION['auth'])){
-        header('Location: index.php');
-        exit();
-      }
       if(!empty($_POST['username']) && !empty($_POST['password']) && empty($_POST['email']) && empty($_POST['password_confirm'])){
         $req = $pdo->prepare('SELECT * FROM member WHERE (username = :username OR mail = :username) AND confirmed_at IS NOT NULL');
         $req->execute(['username' => $_POST['username']]);

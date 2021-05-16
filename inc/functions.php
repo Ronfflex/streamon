@@ -32,22 +32,22 @@ function reconnect_from_cookie(){
             global $pdo;
         }
         $remember_token = $_COOKIE['remember'];
-        explode('==', $remember_token);
+        $parts = explode('==', $remember_token);
         $member_id = $parts[0];
         $req = $pdo->prepare('SELECT * FROM member WHERE id = ?');
         $req->execute([$member_id]);
         $member = $req->fetch();
         if($member){
-          $expected = $member_id . '==' . $member->$remember_token . sha1($member_id . 'pourlagloire');
-          if($expected == $remember_token){
-            session_start();
-            $_SESSION['auth'] = $member;
-            setcookie('remember', $remember_token, strtotime('+7 days'));
-          }
+            $expected = $member_id . '==' . $member->remember_token . sha1($member_id . 'pourlagloire');
+            if($expected == $remember_token){
+                session_start();
+                $_SESSION['auth'] = $member;
+                setcookie('remember', $remember_token, strtotime('+7 days'));
+            }else{
+                setcookie('remember', NULL, -1);
+            }
         }else{
             setcookie('remember', NULL, -1);
         }
-      }else{
-        setcookie('remember', NULL, -1);
     }
 }
