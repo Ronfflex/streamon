@@ -16,7 +16,7 @@ function logged_only(){
     }
     if(!isset($_SESSION['auth'])){
         $_SESSION['flash']['danger'] = "Veuillez vous connecter pour accéder à la page.";
-        header('Location: register.php');
+        header('Location: ../register.php');
         exit();
     }
 }

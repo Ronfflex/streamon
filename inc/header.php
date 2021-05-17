@@ -17,7 +17,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <!-- Custom CSS -->
-    <link href="src/css/main.css" rel="stylesheet">
+    <link href="../src/css/main.css" rel="stylesheet">
     
     <!-- font-family: Verdana -->
 </head>
@@ -37,7 +37,7 @@
             <div class="d-flex flex-grow-1 justify-content-between">
                 <!-- StreamOn logo-->
                 <a class="navbar-brand" href="../index.php">
-                    <img src="src/img/navbar/Logo_StreamOn.svg" alt="Logo StreamOn" width="auto" height="45px">
+                    <img src="../src/img/navbar/Logo_StreamOn.svg" alt="Logo StreamOn" width="auto" height="45px">
                 </a>
                 
                 <div class="d-flex">
@@ -78,7 +78,7 @@
         <?php if(isset($_SESSION['auth'])): ?>
             <button class="btn d-block border-0 me-2 d-flex align-items-center nav-link" id="menu-btn-right" type="button">
                 <p class="mb-0 me-2 fw-bold white-text"><?= $_SESSION['auth']->username; ?></p>
-                <img class="border border-2 border-dark rounded-circle" width="40px" height="40px" alt="photo de profil" src="src/img/popular-today/violet-evergarden.jpg">
+                <img class="border border-2 border-dark rounded-circle" width="40px" height="40px" alt="photo de profil" src="../src/img/popular-today/violet-evergarden.jpg">
             </button>
         <?php else: ?>
             <a href="../register.php" class="nav-link rounded-3 white-text">S'inscrire / Se connecter</a>
@@ -129,7 +129,7 @@
             </li>
             <li class="border-top my-2"></li>
             <li class="mb-1">
-                <a href="discover.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Nos Offres</a>
+                <a href="../discover.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Nos Offres</a>
             </li>
             <li class="border-top my-2"></li>
             <li class="mb-1">
@@ -171,7 +171,7 @@
     <div class="p-4 navbar-custom navbar-custom-right" id="sidebar-right">
         <!-- Profil -->
         <div class="card border border-1" style="border-color: var(--bg-pc)!important;">
-            <img src="src/img/popular-today/violet-evergarden.jpg" class="card-img" alt="Image de profil">
+            <img src="../src/img/popular-today/violet-evergarden.jpg" class="card-img" alt="Image de profil">
             <div class="position-absolute start-0 end-0 bottom-0 px-3 py-5 h-25" style="background-color: #000000b0">
               <h5 class="card-title position-absolute bottom-0 start-0 mb-5 ms-2 fw-bold icone"><?= $_SESSION['auth']->username; ?></h5>
               <p class="card-text position-absolute bottom-0 start-0 mb-2 ms-2 icone">Abonné</p>
@@ -180,19 +180,19 @@
         <!-- Links -->
         <ul class="list-unstyled ps-0 pt-4">
             <li class="mb-1">
-                <a href="profile.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Ma page</a>
+                <a href="../profile.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Ma page</a>
             </li>
             <li class="border-top my-2"></li>
             <li class="mb-1">
-                <a href="account.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Mon compte</a>
+                <a href="../account.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Mon compte</a>
             </li>
             <li class="border-top my-2"></li>
             <li class="mb-1">
-                <a href="credit.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Mes crédits</a>
+                <a href="../credit.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Mes crédits</a>
             </li>
             <li class="border-top my-2"></li>
             <li class="mb-1">
-                <a href="newsletter.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Gerer ma Newsletter</a>
+                <a href="../newsletter.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Gérer ma Newsletter</a>
             </li>
             <li class="border-top my-2"></li>
             <li class="mb-1">

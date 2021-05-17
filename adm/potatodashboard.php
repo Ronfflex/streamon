@@ -4,10 +4,10 @@ logged_only();
 require_once '../inc/db.php';
 
 
-
-$req = $pdo->prepare('SELECT * FROM member ORDER BY id DESC');
-$req->execute();
-$member = $req->fetchAll();
+$req = mysqli_query($con,'SELECT * FROM member');
+//$req = $pdo->prepare('SELECT * FROM member');
+//$req->execute(['username']);
+//$member = $req->fetchAll();
 
 ?>
 
@@ -32,10 +32,15 @@ $member = $req->fetchAll();
 
     <!-- Show members -->
     <ul>
-        <?php foreach($member as $members): ?>
-            test
-            <li><?php $member['id'] ?> : <?php $member['username'] ?></li>
-        <?php endforeach ?>
+        <?php //print_r($member); foreach($member as $members): 
+                while($member = mysqli_fetch_array($req)){    
+        ?>
+            <li><?php //$member['username']
+                    echo $member['username'];    
+            ?></li>
+        <?php //endforeach 
+                }
+        ?>
     </ul>
 </body>
 </html>
