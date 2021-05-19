@@ -59,7 +59,7 @@ $req = mysqli_query($con,'SELECT * FROM member ORDER BY id DESC LIMIT 10');
                     <th scope="row"><?php echo $member['id']; ?></th>
                     <td><?php echo $member['username']; ?></td>
                     <td><?php echo $member['mail']; ?></td>
-                    <td class="text-center"><?php if(!empty($member['confirmation_token'])){ ?> <a href="potatodashboard.php?confirm=<?php echo $member['id'] ?>" class="btn btn-primary btn-sm">Confirmer</a><?php }else{echo $member['confirmed_at'];} ?></td>
+                    <td class="text-center"><?php if(!empty($member['confirmation_token'])){ ?> <a href="../confirm.php?id=<?php echo $member['id'] ?>&token=<?php echo $member['confirmation_token'] ?>" class="btn btn-primary btn-sm">Confirmer</a><?php }else{echo $member['confirmed_at'];} ?></td>
                     <td class="text-center">
                         <a href="mailpassword.php?mail=<?php echo $member['mail'] ?>" class="btn btn-primary btn-sm me-2">Mail</a>
                         <a href="manualpassword.php?mail=<?php echo $member['mail'] ?>" class="btn btn-primary btn-sm">Manuel</a>
