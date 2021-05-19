@@ -15,8 +15,12 @@ if(!empty($_GET) && !empty($_GET['mail'])){
         exit();
     }else{
         $_SESSION['flash']['danger'] = 'Le compte doit d\'abord être confirmé.';
+        header("Location: potatodashboard.php");
+        exit();
     }
 }else{
     $_SESSION['flash']['danger'] = 'Erreur lors de la récupération du mail.';
+    header("Location: potatodashboard.php");
+    exit();
 }
 ?>

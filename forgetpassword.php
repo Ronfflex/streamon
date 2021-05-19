@@ -6,7 +6,7 @@
         $req->execute([$_POST['email']]);
         $member = $req->fetch();
         if($member){
-            session_start();
+            session();
             $reset_token = str_random(60);
             $pdo->prepare('UPDATE member SET reset_token = ?, reset_at = NOW() WHERE id = ?')->execute([$reset_token, $member->id]);
             $_SESSION['flash']['success'] = 'Un mail pour changer de mot de passe vous a été envoyé.';

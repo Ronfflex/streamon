@@ -10,10 +10,15 @@ function str_random($length){
 }
 
 
-function logged_only(){
+function session(){
     if(session_status() == PHP_SESSION_NONE){
         session_start();
     }
+}
+
+
+function logged_only(){
+    session();
     if(!isset($_SESSION['auth'])){
         $_SESSION['flash']['danger'] = "Veuillez vous connecter pour accéder à la page.";
         header('Location: ../register.php');
@@ -21,11 +26,8 @@ function logged_only(){
     }
 }
 
-
 function admin_only(){
-    if(session_status() == PHP_SESSION_NONE){
-        session_start();
-    }
+    session();
     if(!isset($_SESSION['auth']) || $_SESSION['auth']->is_admin == 0){
         $_SESSION['flash']['danger'] = "Vous n'avez pas accès à cette page.";
         header('Location: ../index.php');
@@ -35,9 +37,7 @@ function admin_only(){
 
 // Remember Cookie
 function reconnect_from_cookie(){
-    if(session_status() == PHP_SESSION_NONE){
-        session_start();
-    }
+    session();
     if(isset($_COOKIE['remember']) && !isset($_SESSION['auth'])){
         require_once 'db.php';
         if(!isset($pdo)){
@@ -52,7 +52,6 @@ function reconnect_from_cookie(){
         if($member){
             $expected = $member_id . '==' . $member->remember_token . sha1($member_id . 'pourlagloire');
             if($expected == $remember_token){
-                session_start();
                 $_SESSION['auth'] = $member;
                 setcookie('remember', $remember_token, strtotime('+7 days'));
             }else{

@@ -7,18 +7,28 @@ if(isset($_GET['id']) && isset($_GET['token'])){
     $member = $req->fetch();
     if($member){
         if(!empty($_POST)){
-            if(!empty($_POST['password']) && preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,50}$/', $_POST['password']) && $_POST['password'] == $_POST['password_confirm']){
+            // Minimum eight characters, at least one upper case English letter, one lower case English letter, one number and one special character
+            if(!empty($_POST['password']) && preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/', $_POST['password']) && $_POST['password'] == $_POST['password_confirm']){
                 $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                $pdo->prepare('UPDATE member SET password = ?, reset_at = NULL, reset_token = NULL')->execute([$password]);
-                session_start();
-                $_SESSION['flash']['success'] = 'Votre mot de passse a été modifié correctement.';
-                $_SESSION['auth'] = $member;
-                header('Location: account.php');
-                exit();
+                $pdo->prepare('UPDATE member SET password = ?, reset_at = NULL, reset_token = NULL WHERE id = ?')->execute([$password, $member->id]);
+                session();
+                if(isset($_SESSION['auth']) && $_SESSION['auth']->is_admin == 1){
+                    $_SESSION['flash']['success'] = 'Le mot de passe de l\'utilisateur à été correctement modifié.';
+                    header('Location: adm/potatodashboard.php');
+                    exit();
+                }else{
+                    $_SESSION['auth'] = $member;
+                    $_SESSION['flash']['success'] = 'Votre mot de passe à été correctement modifié.';
+                    header('Location: account.php');
+                    exit();
+                }
+            }else{
+                session();
+                $_SESSION['flash']['danger'] = "Ce token est invalide";
             }
         }
     }else{
-        session_start();
+        session();
         $_SESSION['flash']['danger'] = "Ce token est invalide";
         header('Location: register.php');
         exit();
