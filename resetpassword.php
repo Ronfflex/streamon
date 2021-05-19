@@ -7,7 +7,6 @@ if(isset($_GET['id']) && isset($_GET['token'])){
     $member = $req->fetch();
     if($member){
         if(!empty($_POST)){
-            // REVOIR LA REGEX (ORIGINALE DANS REGISTER.PHP)
             if(!empty($_POST['password']) && preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,50}$/', $_POST['password']) && $_POST['password'] == $_POST['password_confirm']){
                 $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
                 $pdo->prepare('UPDATE member SET password = ?, reset_at = NULL, reset_token = NULL')->execute([$password]);

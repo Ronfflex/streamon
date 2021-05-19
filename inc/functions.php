@@ -21,6 +21,18 @@ function logged_only(){
     }
 }
 
+
+function admin_only(){
+    if(session_status() == PHP_SESSION_NONE){
+        session_start();
+    }
+    if(!isset($_SESSION['auth']) || $_SESSION['auth']->is_admin == 0){
+        $_SESSION['flash']['danger'] = "Vous n'avez pas accès à cette page.";
+        header('Location: ../index.php');
+        exit();
+    }
+}
+
 // Remember Cookie
 function reconnect_from_cookie(){
     if(session_status() == PHP_SESSION_NONE){

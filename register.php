@@ -44,7 +44,7 @@ if(!empty($_POST)) {
     if(empty($_POST['password_confirm']) || $_POST['password'] != $_POST['password_confirm']){
       $errors['password_confirm'] = "Les mots de passes ne correspondent pas";
     }
-    // Informations send to db
+    // Informations sent to db
     if(empty($errors)){
       $req = $pdo->prepare("INSERT INTO member SET username = ?, password = ?, mail = ?, confirmation_token = ?");
       $pwd = password_hash($_POST['password'], PASSWORD_BCRYPT);
@@ -76,8 +76,13 @@ if(!empty($_POST)) {
             $pdo->prepare('UPDATE  member SET remember_token = ? WHERE id = ?')->execute([$remember_token, $member->id]);
             setcookie('remember', $member->id . '==' . $remember_token . sha1($member->id . 'pourlagloire'), strtotime('+7 days'));
           }
-          header('Location: index.php');
-          exit();
+          if($member->is_admin == 1){
+            header('Location: adm/potatodashboard.php');
+            exit();
+          }else{
+            header('Location: index.php');
+            exit();
+          }
         }else{
           $_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte.';
         }
