@@ -11,7 +11,7 @@ require_once 'inc/db.php';
 if(!empty($_POST)) {
   
   $errors = array();
-  // Register or Login
+  // A vérifier : isset register
   if(isset($_POST['register'])){
     // REGISTER
     // Username
@@ -62,35 +62,38 @@ if(!empty($_POST)) {
         exit();
       }
     }
+    // A vérifier : isset de login
     if(isset($_POST['login'])){
       // LOGIN
       if(!empty($_POST['username']) && !empty($_POST['password']) && empty($_POST['email']) && empty($_POST['password_confirm'])){
-        $req = $pdo->prepare('SELECT * FROM member WHERE (username = :username OR mail = :username) AND confirmed_at IS NOT NULL');
+        $req = $pdo->prepare('SELECT * FROM member WHERE (username = :username OR mail = :username)');
         $req->execute(['username' => $_POST['username']]);
         $member = $req->fetch();
-        if(password_verify($_POST['password'], $member->password)){
-          $_SESSION['auth'] = $member;
-          $_SESSION['flash']['success'] = 'Vous êtes bien connecté.';
-          if($_POST['remember']){
-            $remember_token = str_random(250); 
-            $pdo->prepare('UPDATE  member SET remember_token = ? WHERE id = ?')->execute([$remember_token, $member->id]);
-            setcookie('remember', $member->id . '==' . $remember_token . sha1($member->id . 'pourlagloire'), strtotime('+7 days'));
-          }
-          if($member->is_admin == 1){
-            header('Location: adm/potatodashboard.php');
-            exit();
+        if($member->confirmation_token == 'BANNED' && password_verify($_POST['password'], $member->password)){
+          $_SESSION['flash']['danger'] = 'Vous avez été banni.';
+        }elseif(password_verify($_POST['password'], $member->password)){
+            $_SESSION['auth'] = $member;
+            $_SESSION['flash']['success'] = 'Vous êtes bien connecté.';
+            if($_POST['remember'] && $member->is_admin != 1){
+              $remember_token = str_random(250); 
+              $pdo->prepare('UPDATE  member SET remember_token = ? WHERE id = ?')->execute([$remember_token, $member->id]);
+              setcookie('remember', $member->id . '==' . $remember_token . sha1($member->id . 'pourlagloire'), strtotime('+7 days'));
+            }
+            if($member->is_admin == 1){
+              header('Location: adm/potatodashboard.php');
+              exit();
+            }else{
+              header('Location: index.php');
+              exit();
+            }
           }else{
-            header('Location: index.php');
-            exit();
+            $_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte.';
           }
-        }else{
-          $_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte.';
         }
       }else{
         $_SESSION['flash']['danger'] = 'Mauvais formulaire / mauvais bouton de soumission des informations.';
       }
     }
-  }
 ?>
 
 <?php require 'inc/header.php'; ?>
