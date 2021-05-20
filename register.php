@@ -37,7 +37,7 @@ if(!empty($_POST)) {
       }
     }
     // Password
-    if(empty($_POST['password']) || !preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,50}$/', $_POST['password'])){
+    if(empty($_POST['password']) || !preg_match('/^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$ %^&*-]).{8,}$/', $_POST['password'])){
       $errors['password'] = "Le mot de passe doit contenir au moins 8 caractères dont au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial.";
     }
     // Password confirmation

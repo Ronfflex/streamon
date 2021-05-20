@@ -2,6 +2,7 @@
 require '../inc/functions.php';
 admin_only();
 
+session();
 if(!empty($_GET) && !empty($_GET['id'])){
     require_once '../inc/db.php';
     $member_id = $_GET['id'];

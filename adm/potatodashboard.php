@@ -48,8 +48,9 @@ $req = mysqli_query($con,'SELECT * FROM member ORDER BY id DESC LIMIT 10');
                     <th scope="col">#id</th>
                     <th scope="col">Pseudo</th>
                     <th scope="col">Email</th>
-                    <th scope="col" class="text-center">Confirmer le compte</th>
+                    <th scope="col" class="text-center">Confirmer le compte (unban)</th>
                     <th scope="col" class="text-center">Réinitialiser le mdp</th>
+                    <th scope="col" class="text-center">Bannir le compte (unconfirm)</th>
                     <th scope="col" class="text-center">Supprimer de la bdd</th>
                 </tr>
             </thead>
@@ -59,11 +60,14 @@ $req = mysqli_query($con,'SELECT * FROM member ORDER BY id DESC LIMIT 10');
                     <th scope="row"><?php echo $member['id']; ?></th>
                     <td><?php echo $member['username']; ?></td>
                     <td><?php echo $member['mail']; ?></td>
-                    <td class="text-center"><?php if(!empty($member['confirmation_token'])){ ?> <a href="../confirm.php?id=<?php echo $member['id'] ?>&token=<?php echo $member['confirmation_token'] ?>" class="btn btn-primary btn-sm">Confirmer</a><?php }else{echo $member['confirmed_at'];} ?></td>
+                    <td class="text-center"><?php if(!empty($member['confirmation_token']) || $member['confirmation_token'] == 'BANNED'){ ?>
+                    <a href="../confirm.php?id=<?php echo $member['id'] ?>&token=<?php echo $member['confirmation_token'] ?>" class="btn btn-primary btn-sm">Confirmer</a><?php }else{echo $member['confirmed_at'];} ?></td>
                     <td class="text-center">
                         <a href="mailpassword.php?mail=<?php echo $member['mail'] ?>" class="btn btn-primary btn-sm me-2">Mail</a>
                         <a href="manualpassword.php?mail=<?php echo $member['mail'] ?>" class="btn btn-primary btn-sm">Manuel</a>
                     </td>
+                    <td class="text-center"><?php if($member['confirmation_token'] != 'BANNED'){ ?>
+                    <a href="ban.php?id=<?php echo $member['id'] ?>" class="btn btn-primary btn-sm me-2">Bannir</a><?php }else{echo 'BANNI';} ?></td>
                     <td class="text-center">
                         <a href="delete.php?id=<?php echo $member['id'] ?>" class="btn btn-danger btn-sm"
                         onclick="return confirm('Êtes-vous sur de vouloir supprimer définitivement l\'utilisateur <?php echo $member['username'] ?> ?')">Supprimer</a>

@@ -1,4 +1,5 @@
 <?php
+//faire une vérif type : if(!empty($_GET) && !empty($_GET['id']))  ?
 $member_id = $_GET['id'];
 $token = $_GET['token'];
 require 'inc/db.php';
