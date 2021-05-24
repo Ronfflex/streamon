@@ -10,6 +10,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreamOn</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../src/img/favicon/favicon.ico">
+
     <!-- meta SEO -->
     <meta name="description" content="StreamOn est un site de streaming en ligne légal regroupant une grande variété d’animations françaises et japonaises. Vous y retrouverez un catalogue contenant le meilleur de l’anime en film et en série !">
     
@@ -166,6 +170,7 @@
         </ul>
     </div>
     
+
     <?php if(isset($_SESSION['auth'])): ?>
     <!-- RIGHT NAVBAR -->
     <div class="p-4 navbar-custom navbar-custom-right" id="sidebar-right">
@@ -179,6 +184,12 @@
         </div>
         <!-- Links -->
         <ul class="list-unstyled ps-0 pt-4">
+            <?php if($_SESSION['auth']->is_admin == 1): ?>
+            <li class="mb-1">
+                <a href="../adm/potatodashboard.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase text-danger">Administration</a>
+            </li>
+            <li class="border-top my-2"></li>
+            <?php endif; ?>
             <li class="mb-1">
                 <a href="../profile.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Ma page</a>
             </li>
@@ -200,7 +211,6 @@
             </li>
         </ul>
     </div>
-    <?php else: ?>
     <?php endif; ?>
 
 

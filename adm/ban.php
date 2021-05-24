@@ -16,4 +16,8 @@ if(!empty($_GET) && !empty($_GET['id'])){
     header('Location: potatodashboard.php');
     exit();
     }
+}else{
+    $_SESSION['flash']['danger'] = 'Erreur lors de la récupération de l\'id.';
+    header('Location: potatodashboard.php');
+    exit();
 }

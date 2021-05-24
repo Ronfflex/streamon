@@ -37,7 +37,8 @@ $req = mysqli_query($con,'SELECT * FROM member ORDER BY id DESC LIMIT 10');
         <?php unset($_SESSION['flash']); ?>
     <?php endif; ?>
     <div class="extern-margin bg-light" style="height: 100vh">
-        <h1 class="fs-1 mb-5 text-uppercase fw-bold">Bonjour admin <?= $_SESSION['auth']->username; ?></h1>
+        <h1 class="fs-1 mb-4 text-uppercase fw-bold">Bonjour admin <?= $_SESSION['auth']->username; ?></h1>
+        <a href="../index.php" class="btn btn-primary mb-5">Acceuil</a>
 
         <!-- Show members -->
         <div class="purple-bg p-2">
