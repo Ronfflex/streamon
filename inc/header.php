@@ -179,7 +179,10 @@
             <img src="../src/img/popular-today/violet-evergarden.jpg" class="card-img" alt="Image de profil">
             <div class="position-absolute start-0 end-0 bottom-0 px-3 py-5 h-25" style="background-color: #000000b0">
               <h5 class="card-title position-absolute bottom-0 start-0 mb-5 ms-2 fw-bold icone"><?= $_SESSION['auth']->username; ?></h5>
-              <p class="card-text position-absolute bottom-0 start-0 mb-2 ms-2 icone">Abonné</p>
+              <p class="card-text position-absolute bottom-0 start-0 mb-2 ms-2 icone">
+                <?php if($_SESSION['auth']->status == 0): ?>Offre gratuite<?php endif; ?>
+                <?php if($_SESSION['auth']->status == 1): ?>Offre prenium<?php endif; ?>
+              </p>
             </div>
         </div>
         <!-- Links -->

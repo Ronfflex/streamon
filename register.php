@@ -22,27 +22,27 @@ if(!empty($_POST)) {
       $req->execute([$_POST['username']]);
       $member = $req->fetch();
       if($member){
-        $errors['username'] = "Ce pseudo est déjà utilisé";
+        $errors['username'] = 'Ce pseudo est déjà utilisé';
       }
     }
     // Email
     if(empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-      $errors['email'] = "Email invalide";
+      $errors['email'] = 'Email invalide';
     } else {
       $req = $pdo->prepare('SELECT id FROM member WHERE mail = ?');
       $req->execute([$_POST['email']]);
       $mail = $req->fetch();
       if($mail){
-        $errors['email'] = "Un compte est déjà enregistré avec ce mail";
+        $errors['email'] = 'Un compte est déjà enregistré avec ce mail';
       }
     }
     // Password
-    if(empty($_POST['password']) || !preg_match('/^(?=.?[A-Z])(?=.?[a-z])(?=.?[0-9])(?=.?[#?!@$ %^&*-]).{8,}$/', $_POST['password'])){
-      $errors['password'] = "Le mot de passe doit contenir au moins 8 caractères dont au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial.";
+    if(empty($_POST['password']) || !preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,50}$/", $_POST['password'])){
+      $errors['password'] = 'Le mot de passe doit contenir au moins 8 caractères dont au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial @$!%*?&';
     }
     // Password confirmation
     if(empty($_POST['password_confirm']) || $_POST['password'] != $_POST['password_confirm']){
-      $errors['password_confirm'] = "Les mots de passes ne correspondent pas";
+      $errors['password_confirm'] = 'Les mots de passes ne correspondent pas';
     }
     // Informations sent to db
     if(empty($errors)){
@@ -69,8 +69,13 @@ if(!empty($_POST)) {
         $req = $pdo->prepare('SELECT * FROM member WHERE (username = :username OR mail = :username)');
         $req->execute(['username' => $_POST['username']]);
         $member = $req->fetch();
+        // Banned
         if($member->confirmation_token == 'BANNED' && password_verify($_POST['password'], $member->password)){
-          $_SESSION['flash']['danger'] = 'Vous avez été banni.';
+          $errors['banned'] = 'Vous avez été banni.';
+        // Unconfirmed
+        }elseif($member->confirmed_at == NULL && password_verify($_POST['password'], $member->password)){
+          $errors['confirmed'] = 'Veuillez consulter vos mails afin de confirmer votre compte.';
+        // Connection
         }elseif(password_verify($_POST['password'], $member->password)){
             $_SESSION['auth'] = $member;
             $_SESSION['flash']['success'] = 'Vous êtes bien connecté.';
@@ -87,14 +92,12 @@ if(!empty($_POST)) {
               exit();
             }
           }else{
-            $_SESSION['flash']['danger'] = 'Identifiant ou mot de passe incorrecte.';
+            $errors['login'] = 'Identifiant ou mot de passe incorrecte.';
           }
         }
-      }else{
-        $_SESSION['flash']['danger'] = 'Mauvais formulaire / mauvais bouton de soumission des informations.';
       }
     }
-?>
+  ?>
 
 <?php require 'inc/header.php'; ?>
 
@@ -105,7 +108,7 @@ if(!empty($_POST)) {
     <p>Erreurs lors de l'inscription :</p>
     <ul>
       <?php foreach($errors as $error): ?>
-        <li><?= $error; ?></li>
+        <li class="mt-2"><?= $error; ?></li>
       <?php endforeach; ?>
     </ul>
   </div>
@@ -125,19 +128,19 @@ if(!empty($_POST)) {
                     <div class="row py-5">
                         <div class="col-6 mb-5 ps-2 pe-1">
                             <label for="inputEmail" class="fw-bold fs-6 mb-1">Adresse Email</label>
-                            <input type="email" name="email" class="form-control py-2" id="inputEmail" placeholder="email@streamon.fr" required>
+                            <input type="email" name="email" class="form-control py-2" id="inputEmail" placeholder="email@streamon.fr">
                         </div>
                         <div class="col-6 mb-5 px-1">
                             <label for="inputPseudo" class="fw-bold fs-6 mb-1">Pseudo</label>
-                            <input type="text" name="username" class="form-control py-2" id="inputPseudo" placeholder="Pseudo" required>
+                            <input type="text" name="username" class="form-control py-2" id="inputPseudo" placeholder="Pseudo">
                         </div>
                         <div class="col-6 px-1 ps-2">
                             <label for="inputPassword" class="fw-bold fs-6 mb-1">Mot de passe</label>
-                            <input type="password" name="password" class="form-control py-2" id="inputPassword" placeholder="Mot de passe" required>
+                            <input type="password" name="password" class="form-control py-2" id="inputPassword" placeholder="Mot de passe">
                         </div>
                         <div class="col-6 px-1">
                             <label for="inputPasswordConfirm" class="fw-bold fs-6 mb-1">Confirmez le mot de passe</label>
-                            <input type="password" name="password_confirm" class="form-control py-2" id="inputPasswordConfirm" placeholder="Confirmez le mot de passe" required>
+                            <input type="password" name="password_confirm" class="form-control py-2" id="inputPasswordConfirm" placeholder="Confirmez le mot de passe">
                         </div>
                     </div>
                     <div class="text-center">
@@ -157,11 +160,11 @@ if(!empty($_POST)) {
                     <div class="row pt-5 pb-4">
                         <div class="col-12 mb-5 ps-2 pe-1">
                             <label for="inputEmailLogin" class="fw-bold fs-6 mb-1">Email ou nom d'utilisateur</label>
-                            <input type="text" name="username" class="form-control py-2" id="inputEmailLogin" placeholder="email@streamon.fr" required>
+                            <input type="text" name="username" class="form-control py-2" id="inputEmailLogin" placeholder="email@streamon.fr">
                         </div>
                         <div class="col-12 ps-2 pe-1">
                             <label for="inputPasswordLogin" class="fw-bold fs- mb-1">Mot de passe</label>
-                            <input type="password" name="password" class="form-control py-2 mb-2" id="inputPasswordLogin" placeholder="Mot de passe" required>
+                            <input type="password" name="password" class="form-control py-2 mb-2" id="inputPasswordLogin" placeholder="Mot de passe">
                             <div class="text-end">
                                 <a href="forgetpassword.php" class="purple">Mot de passe oublié ?</a>
                             </div>

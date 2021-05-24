@@ -62,3 +62,11 @@ function reconnect_from_cookie(){
         }
     }
 }
+
+
+// Date format
+function date_form(){
+    $confirmed_at = $_SESSION['auth']->confirmed_at;
+    setlocale(LC_TIME, 'fr_FR.utf8','fra');
+    echo $confirmed_date = strftime('%d %B %Y', strtotime($confirmed_at));
+}

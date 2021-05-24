@@ -327,6 +327,10 @@ a:hover, button:hover {
         background-color: #E7C169;
     }
 
+    .gold-text {
+        color: #E7C169;
+    }
+
     .gold-border {
         border-left: 14px solid #E7C169!important;
     }
@@ -340,6 +344,10 @@ a:hover, button:hover {
     /* Free */
     .free-bg {
         background-color: #CDD1DA;
+    }
+
+    .free-text {
+        color: #CDD1DA;
     }
 
     .free-border {

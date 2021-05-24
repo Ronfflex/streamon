@@ -1,5 +1,6 @@
+</div>
     <!-- FOOTER -->
-    <footer class="container-fluid main-footer dark-bg">
+    <footer class="container-fluid main-footer dark-bg position-absolute">
         <div class="row py-4">
             <div class="col-4 ps-5">
                 <p class="mb-0 text">© StreamOn 2021 <span class="purple">—</span> Tous droits réservés</p>

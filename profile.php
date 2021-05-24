@@ -8,11 +8,13 @@ require 'inc/header.php';
     <header class="navbar-margin header">
         <div class="extern-margin container-fluid row">
             <div class="col-10 d-flex px-0">
-                <img src="src/img/popular-today/violet-evergarden.jpg" class="img-thumbnail me-4" alt="Image de profil">
-                <div class="pe-4 d-flex flex-column justify-content-around border-bottom border-2 w-100">
-                    <h1 class="text-uppercase fw-bold h1 "><?= $_SESSION['auth']->username; ?></h1>
+                <img src="src/img/popular-today/violet-evergarden.jpg" class="img-thumbnail me-4 dark-bg border-0" alt="Image de profil">
+                <div class="pe-4 d-flex flex-column justify-content-evenly border-bottom border-2 w-100">
+                    <h1 class="text-uppercase fw-bold h1 mb-0"><?= $_SESSION['auth']->username; ?></h1>
                     <div>
-                        <p class="fs-5 fw-bold mb-2">Membre depuis le XX / XX / XXXX</p>
+                        <?php if($_SESSION['auth']->status == 0): ?><p class="fs-6 mb-2 free-text">Offre gratuite</p><?php endif; ?>
+                        <?php if($_SESSION['auth']->status == 1): ?><p class="fs-6 mb-2 gold-text">Offre prenium</p><?php endif; ?>
+                        <p class="fs-5 fw-bold mb-2">Membre depuis le <?= date_form() ?></p>
                         <div class="d-flex justify-content-between">
                             <p class="fs-5 fw-bold">Suit actuellement <span class="purple">XX</span> Animes</p>
                             <p class="fs-5 fw-bold"><span class="purple">XX</span> Jetons</p>
