@@ -69,27 +69,31 @@ if(!empty($_POST)) {
         $req = $pdo->prepare('SELECT * FROM member WHERE (username = :username OR mail = :username)');
         $req->execute(['username' => $_POST['username']]);
         $member = $req->fetch();
-        // Banned
-        if($member->confirmation_token == 'BANNED' && password_verify($_POST['password'], $member->password)){
-          $errors['banned'] = 'Vous avez été banni.';
-        // Unconfirmed
-        }elseif($member->confirmed_at == NULL && password_verify($_POST['password'], $member->password)){
-          $errors['confirmed'] = 'Veuillez consulter vos mails afin de confirmer votre compte.';
-        // Connection
-        }elseif(password_verify($_POST['password'], $member->password)){
-            $_SESSION['auth'] = $member;
-            $_SESSION['flash']['success'] = 'Vous êtes bien connecté.';
-            if($_POST['remember'] && $member->is_admin != 1){
-              $remember_token = str_random(250); 
-              $pdo->prepare('UPDATE  member SET remember_token = ? WHERE id = ?')->execute([$remember_token, $member->id]);
-              setcookie('remember', $member->id . '==' . $remember_token . sha1($member->id . 'pourlagloire'), strtotime('+7 days'));
-            }
-            if($member->is_admin == 1){
-              header('Location: adm/potatodashboard.php');
-              exit();
+        if($member){
+          // Banned
+          if($member->confirmation_token == 'BANNED' && password_verify($_POST['password'], $member->password)){
+            $errors['banned'] = 'Vous avez été banni.';
+          // Unconfirmed
+          }elseif($member->confirmed_at == NULL && password_verify($_POST['password'], $member->password)){
+            $errors['confirmed'] = 'Veuillez consulter vos mails afin de confirmer votre compte.';
+          // Connection
+          }elseif(password_verify($_POST['password'], $member->password)){
+              $_SESSION['auth'] = $member;
+              $_SESSION['flash']['success'] = 'Vous êtes bien connecté.';
+              if($_POST['remember'] && $member->is_admin != 1){
+                $remember_token = str_random(250); 
+                $pdo->prepare('UPDATE  member SET remember_token = ? WHERE id = ?')->execute([$remember_token, $member->id]);
+                setcookie('remember', $member->id . '==' . $remember_token . sha1($member->id . 'pourlagloire'), strtotime('+7 days'));
+              }
+              if($member->is_admin == 1){
+                header('Location: adm/potatodashboard.php');
+                exit();
+              }else{
+                header('Location: index.php');
+                exit();
+              }
             }else{
-              header('Location: index.php');
-              exit();
+              $errors['login'] = 'Identifiant ou mot de passe incorrecte.';
             }
           }else{
             $errors['login'] = 'Identifiant ou mot de passe incorrecte.';
@@ -128,19 +132,19 @@ if(!empty($_POST)) {
                     <div class="row py-5">
                         <div class="col-6 mb-5 ps-2 pe-1">
                             <label for="inputEmail" class="fw-bold fs-6 mb-1">Adresse Email</label>
-                            <input type="email" name="email" class="form-control py-2" id="inputEmail" placeholder="email@streamon.fr">
+                            <input type="email" name="email" class="form-control py-2" id="inputEmail" placeholder="email@streamon.fr" required>
                         </div>
                         <div class="col-6 mb-5 px-1">
                             <label for="inputPseudo" class="fw-bold fs-6 mb-1">Pseudo</label>
-                            <input type="text" name="username" class="form-control py-2" id="inputPseudo" placeholder="Pseudo">
+                            <input type="text" name="username" class="form-control py-2" id="inputPseudo" placeholder="Pseudo" required>
                         </div>
                         <div class="col-6 px-1 ps-2">
                             <label for="inputPassword" class="fw-bold fs-6 mb-1">Mot de passe</label>
-                            <input type="password" name="password" class="form-control py-2" id="inputPassword" placeholder="Mot de passe">
+                            <input type="password" name="password" class="form-control py-2" id="inputPassword" placeholder="Mot de passe" required>
                         </div>
                         <div class="col-6 px-1">
                             <label for="inputPasswordConfirm" class="fw-bold fs-6 mb-1">Confirmez le mot de passe</label>
-                            <input type="password" name="password_confirm" class="form-control py-2" id="inputPasswordConfirm" placeholder="Confirmez le mot de passe">
+                            <input type="password" name="password_confirm" class="form-control py-2" id="inputPasswordConfirm" placeholder="Confirmez le mot de passe" required>
                         </div>
                     </div>
                     <div class="text-center">
@@ -160,11 +164,11 @@ if(!empty($_POST)) {
                     <div class="row pt-5 pb-4">
                         <div class="col-12 mb-5 ps-2 pe-1">
                             <label for="inputEmailLogin" class="fw-bold fs-6 mb-1">Email ou nom d'utilisateur</label>
-                            <input type="text" name="username" class="form-control py-2" id="inputEmailLogin" placeholder="email@streamon.fr">
+                            <input type="text" name="username" class="form-control py-2" id="inputEmailLogin" placeholder="email@streamon.fr" required>
                         </div>
                         <div class="col-12 ps-2 pe-1">
                             <label for="inputPasswordLogin" class="fw-bold fs- mb-1">Mot de passe</label>
-                            <input type="password" name="password" class="form-control py-2 mb-2" id="inputPasswordLogin" placeholder="Mot de passe">
+                            <input type="password" name="password" class="form-control py-2 mb-2" id="inputPasswordLogin" placeholder="Mot de passe" required>
                             <div class="text-end">
                                 <a href="forgetpassword.php" class="purple">Mot de passe oublié ?</a>
                             </div>
