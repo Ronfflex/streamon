@@ -32,6 +32,10 @@
 .purple-bg {
     background-color: var(--primary-color);
 }
+.purple-border{
+    border: solid;
+    border-color: var(--primary-color);
+}
 .text {
     color: var(--text-color);
 }
@@ -361,12 +365,18 @@ a:hover, button:hover {
     }
 
 
+.purple-border-l{
+    border-left: 3px solid var(--primary-color);
+}
+.purple-border-t{
+    border-top: 3px solid var(--primary-color);
+}
 
 
 /* RESPONSIVE */
 @media screen and (max-width: 1600px){
     .extern-margin{
-        padding: 3rem 1rem 1rem;
+        padding: 3rem 1rem;
     } 
 }
 
