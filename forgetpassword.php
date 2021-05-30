@@ -12,7 +12,7 @@
             $_SESSION['flash']['success'] = 'Un mail pour changer de mot de passe vous a été envoyé.';
             mail($_POST['email'], 'Réinitialisation de votre mot de passe StreamOn.fr', "Afin de réinistialiser votre mot de passe, veuillez cliquer sur ce lien:\n\nhttp://streamon.fr/resetpassword.php?id={$member->id}&token=$reset_token");
             header('Location: register.php');
-            exit();
+            exit;
         }else{
             $_SESSION['flash']['danger'] = 'Aucun compte ne correspond à cette adresse mail.';
         }

@@ -15,12 +15,12 @@ if(isset($_GET['id']) && isset($_GET['token'])){
                 if(isset($_SESSION['auth']) && $_SESSION['auth']->is_admin == 1){
                     $_SESSION['flash']['success'] = 'Le mot de passe de l\'utilisateur à été correctement modifié.';
                     header('Location: adm/potatodashboard.php');
-                    exit();
+                    exit;
                 }else{
                     $_SESSION['auth'] = $member;
                     $_SESSION['flash']['success'] = 'Votre mot de passe à été correctement modifié.';
                     header('Location: account.php');
-                    exit();
+                    exit;
                 }
             }else{
                 session();
@@ -31,11 +31,11 @@ if(isset($_GET['id']) && isset($_GET['token'])){
         session();
         $_SESSION['flash']['danger'] = "Ce token est invalide";
         header('Location: register.php');
-        exit();
+        exit;
     }
 }else{
     header('Location: register.php');
-    exit();
+    exit;
 }
 
 ?>

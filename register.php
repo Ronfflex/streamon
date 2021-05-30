@@ -1,19 +1,18 @@
 <?php 
 require_once 'inc/functions.php';
-session_start();
+session();
 reconnect_from_cookie();
 if(isset($_SESSION['auth'])){
   header('Location: index.php');
-  exit();
+  exit;
 }
 require_once 'inc/db.php';
 
 if(!empty($_POST)) {
-  
   $errors = array();
-  // A vérifier : isset register
+
+  // REGISTER
   if(isset($_POST['register'])){
-    // REGISTER
     // Username
     if(empty($_POST['username']) || !preg_match('/^[a-z0-9A-Z_]+$/', $_POST['username'])){
       $errors['username'] = "Pseudo invalide";
@@ -46,26 +45,33 @@ if(!empty($_POST)) {
     }
     // Informations sent to db
     if(empty($errors)){
-      $req = $pdo->prepare("INSERT INTO member SET username = ?, password = ?, mail = ?, confirmation_token = ?");
+      $username = htmlspecialchars($_POST['username']);
+      $pwd = htmlspecialchars($_POST['password']);
+      $mail = htmlspecialchars($_POST['email']);
+
+      $req = $pdo->prepare('INSERT INTO member (username, password, mail, confirmation_token) VALUES (?, ?, ?, ?)');
       $pwd = password_hash($_POST['password'], PASSWORD_BCRYPT);
       $token = str_random(60);
       $req->execute([
-        $_POST['username'],
+        $username,
         $pwd,
-        $_POST['email'],
+        $mail,
         $token
         ]);
         $member_id = $pdo->lastInsertId();
         mail($_POST['email'], 'Confirmation de votre compte', "Afin de confirmer votre inscription, merci de cliquer sur ce lien:\n\nhttp://streamon.fr/confirm.php?id=$member_id&token=$token");
         $_SESSION['flash']['success'] = 'Un mail de confirmation permettant la validation de votre compte a été envoyé.';
         header('Location: register.php');
-        exit();
+        exit;
       }
     }
-    // A vérifier : isset de login
+    // LOGIN
     if(isset($_POST['login'])){
-      // LOGIN
       if(!empty($_POST['username']) && !empty($_POST['password']) && empty($_POST['email']) && empty($_POST['password_confirm'])){
+        $username = htmlspecialchars($_POST['username']);
+        $pwd = htmlspecialchars($_POST['password']);
+        $mail = htmlspecialchars($_POST['email']);
+
         $req = $pdo->prepare('SELECT * FROM member WHERE (username = :username OR mail = :username)');
         $req->execute(['username' => $_POST['username']]);
         $member = $req->fetch();
@@ -87,10 +93,10 @@ if(!empty($_POST)) {
               }
               if($member->is_admin == 1){
                 header('Location: adm/potatodashboard.php');
-                exit();
+                exit;
               }else{
                 header('Location: index.php');
-                exit();
+                exit;
               }
             }else{
               $errors['login'] = 'Identifiant ou mot de passe incorrecte.';
@@ -101,7 +107,8 @@ if(!empty($_POST)) {
         }
       }
     }
-  ?>
+?>
+
 
 <?php require 'inc/header.php'; ?>
 
@@ -120,9 +127,9 @@ if(!empty($_POST)) {
 
 </div>
     
-    <!-- FORM -->
+    <!-- FORMS -->
     <div class="container-fluid w-75 mx-auto border border-secondary dark-bg" style="margin: 22.05vh 0; padding: 4rem 0;">
-        <!-- Register -->
+        <!-- REGISTER -->
         <div class="row">
             <main class="col-8 px-5 border-end">
                 <form action="" method="POST">
@@ -155,7 +162,7 @@ if(!empty($_POST)) {
             </main>
             
             
-            <!-- Login -->
+            <!-- LOGIN -->
             <main class="col px-5">
                 <form action="" method="POST">
                     <h2 class="mb-2 fw-bold fs-1">Se connecter</h2>

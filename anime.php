@@ -1,16 +1,33 @@
+<?php
+require 'inc/functions.php';
+session();
+require_once 'inc/db.php';
+
+if(!empty($_GET) && !empty($_GET['id_film'])){
+    $req = $pdo->prepare('SELECT * FROM film WHERE id = ?');
+    $req->execute([$_GET['id_film']]);
+    if($req->rowCount() == 1){
+        $film = $req->fetch();
+        //print_r($film);
+        //die;
+    }else{
+        $_SESSION['flash']['danger'] = 'Film introuvable.';
+        header('Location: index.php');
+        exit;
+    }
+}else{
+    header('Location: index.php');
+    exit;
+}
+
+?>
+
+
 <?php require 'inc/header.php'; ?>
-
-
-
-
-
-
-
-
 
     <header class="navbar-margin header">
         <div class="extern-margin container-fluid">
-            <h1 class="text-uppercase fw-bold h1">Nom du film/série</h1>
+            <h1 class="text-uppercase fw-bold h1"><?php echo $film['title']; ?></h1>
         </div>
     </header>
 
@@ -31,13 +48,13 @@
                 </div>
                 <!-- videoplayer -->
                 <div class="text-center mb-2">
-                    <iframe width="960" height="540" src="https://uptostream.com/iframe/cu7r8715nqcq" scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>
+                    <iframe width="960" height="540" src="<?php echo $film['url']; ?>" scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>
                 </div>
                 <div class="purple-border-t row mx-3">
                     <!-- synopsis -->
                     <div class="col-6 px-0 mt-2">
                         <h3 class="fs-5 mb-1">Synopsis:</h3>
-                        <p class="fs-6">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo doloribus dicta eligendi ab, sunt iusto, nam unde corporis quibusdam quas aut. Esse, laborum. Dolores, fugiat debitis autem accusamus iste ducimus.</p>
+                        <p class="fs-6"><?php echo $film['synopsis']; ?></p>
                     </div>
                     <!-- directors and voice actors -->
                     <div class="col-6 mt-2">
@@ -45,7 +62,7 @@
                         <div class="d-flex justify-content-around">
                             <div class="text-center">
                                 <img class="border-2 purple-border rounded-circle" width="80px" height="80px" alt="photo de profil" src="../src/img/popular-today/violet-evergarden.jpg">
-                                <p class="fs-6 mt-1">Un Acteur</p>
+                                <p class="fs-6 mt-1"><?php echo $film['actor']; ?></p>
                             </div>
                             <div class="text-center">
                                 <img class="border-2 purple-border rounded-circle" width="80px" height="80px" alt="photo de profil" src="../src/img/popular-today/violet-evergarden.jpg">

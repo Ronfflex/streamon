@@ -9,6 +9,11 @@ $req = mysqli_query($con,'SELECT * FROM member ORDER BY id DESC LIMIT 10');
 //$req->execute(['username']);
 //$member = $req->fetchAll();
 
+
+$film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -36,12 +41,17 @@ $req = mysqli_query($con,'SELECT * FROM member ORDER BY id DESC LIMIT 10');
         <?php endforeach; ?>
         <?php unset($_SESSION['flash']); ?>
     <?php endif; ?>
+
+
     <div class="extern-margin bg-light" style="height: 100vh">
         <h1 class="fs-1 mb-4 text-uppercase fw-bold">Bonjour admin <?= $_SESSION['auth']->username; ?></h1>
         <a href="../index.php" class="btn btn-primary mb-5">Acceuil</a>
+        <a href="add_film.php" class="btn btn-primary mb-5">Ajouter un film</a>
+        <a href="add_series.php" class="btn btn-primary mb-5">Ajouter une série</a>
+
 
         <!-- Show members -->
-        <div class="purple-bg p-2">
+        <div class="purple-bg p-2 mb-4">
         <h2 class="fs-3 mb-3 py-2 ps-2 fw-bold text-white">Membres inscrits</h2>
         <table class="table table-light mb-0">
             <thead>
@@ -78,6 +88,36 @@ $req = mysqli_query($con,'SELECT * FROM member ORDER BY id DESC LIMIT 10');
             </tbody>
         </table>
         </div>
+
+
+        <!-- Show films -->
+        <div class="purple-bg p-2">
+        <h2 class="fs-3 mb-3 py-2 ps-2 fw-bold text-white">Films</h2>
+        <table class="table table-light mb-0">
+            <thead>
+                <tr>
+                    <th scope="col">#id</th>
+                    <th scope="col">Titre</th>
+                    <th scope="col">URL1</th>
+                    <th scope="col" class="text-center">Supprimer de la bdd</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while($films = mysqli_fetch_array($film)): ?>
+                <tr>
+                    <th scope="row"><?php echo $films['id']; ?></th>
+                    <td><?php echo $films['title']; ?></td>
+                    <td><?php echo $films['url']; ?></td>
+                    <td class="text-center">
+                        <a href="delete.php?id_film=<?php echo $films['id'] ?>" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Êtes-vous sur de vouloir supprimer définitivement le film <?php echo $films['title'] ?> ?')">Supprimer</a>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+        </div>
+
     </div>
 </body>
 </html>

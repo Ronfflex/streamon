@@ -1,0 +1,4 @@
+AuthUserFile "/var/www/html/adm/.htpasswd"
+AuthName "Restricted access"
+AuthType Basic
+Require valid-user

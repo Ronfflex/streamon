@@ -10,5 +10,5 @@ $pass='k$T3oX9L3ELc8xMp';
 $dbname='streamon';
 $con=mysqli_connect($host,$username,$pass,$dbname);
 if(!$con){
-    die('Could not Connect MySql Server:' .mysql_error());
+    die('Could not Connect MySql Server:');
 }

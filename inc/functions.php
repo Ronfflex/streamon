@@ -22,7 +22,7 @@ function logged_only(){
     if(!isset($_SESSION['auth'])){
         $_SESSION['flash']['danger'] = "Veuillez vous connecter pour accéder à la page.";
         header('Location: ../register.php');
-        exit();
+        exit;
     }
 }
 
@@ -31,7 +31,7 @@ function admin_only(){
     if(!isset($_SESSION['auth']) || $_SESSION['auth']->is_admin == 0){
         $_SESSION['flash']['danger'] = "Vous n'avez pas accès à cette page.";
         header('Location: ../index.php');
-        exit();
+        exit;
     }
 }
 

@@ -1,5 +1,0 @@
-AuthUserFile "C:/Users/Admin/Documents/ESGI/_Projet_Annuel/streamon/streamon/adm/.htpasswd"
-AuthGroupFile /dev/null
-AuthName "Restricted access"
-AuthType Basic
-Require valid-user
