@@ -101,6 +101,8 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
                     <th scope="col">URL1</th>
                     <th scope="col">URL2</th>
                     <th scope="col">Ajouté par</th>
+                    <th scope="col">Edité par x le jj/mm/aaa</th>
+                    <th scope="col" class="text-center">Modifier</th>
                     <th scope="col" class="text-center">Supprimer de la bdd</th>
                 </tr>
             </thead>
@@ -111,8 +113,10 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
                     <td><a href="../anime.php?id_film=<?php echo $films['id']; ?> "><?php echo $films['title']; ?></a></td>
                     <td><?php echo $films['url']; ?></td>
                     <td><?php echo $films['url2']; ?></td>
-                    <td><?php echo $films['add_by']; ?></td><td class="text-center">
-                        <a href="add_film.php?id_film=<?php echo $films['id'] ?>" class="btn btn-danger btn-sm">Modifier</a>
+                    <td><?php echo $films['add_by']; ?></td>
+                    <td><?php echo $films['edit_by'] . ' ' . $films['edit_date'];?></td>
+                    <td class="text-center">
+                        <a href="add_film.php?id_film=<?php echo $films['id'] ?>" class="btn btn-primary btn-sm">Modifier</a>
                     </td>
                     <td class="text-center">
                         <a href="delete.php?id_film=<?php echo $films['id'] ?>" class="btn btn-danger btn-sm"
