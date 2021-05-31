@@ -27,7 +27,7 @@ if(!empty($_GET) && !empty($_GET['id_film'])){
 
     <header class="navbar-margin header">
         <div class="extern-margin container-fluid">
-            <h1 class="text-uppercase fw-bold h1"><?php echo $film['title']; ?></h1>
+            <h1 class="text-uppercase fw-bold h1"><?= $film->title ?></h1>
         </div>
     </header>
 
@@ -48,13 +48,13 @@ if(!empty($_GET) && !empty($_GET['id_film'])){
                 </div>
                 <!-- videoplayer -->
                 <div class="text-center mb-2">
-                    <iframe width="960" height="540" src="<?php echo $film['url']; ?>" scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>
+                    <iframe width="960" height="540" src="<?= $film->url ?>" scrolling="no" frameborder="0" allowfullscreen webkitallowfullscreen></iframe>
                 </div>
                 <div class="purple-border-t row mx-3">
                     <!-- synopsis -->
                     <div class="col-6 px-0 mt-2">
                         <h3 class="fs-5 mb-1">Synopsis:</h3>
-                        <p class="fs-6"><?php echo $film['synopsis']; ?></p>
+                        <p class="fs-6"><?= $film->synopsis ?></p>
                     </div>
                     <!-- directors and voice actors -->
                     <div class="col-6 mt-2">
@@ -62,7 +62,7 @@ if(!empty($_GET) && !empty($_GET['id_film'])){
                         <div class="d-flex justify-content-around">
                             <div class="text-center">
                                 <img class="border-2 purple-border rounded-circle" width="80px" height="80px" alt="photo de profil" src="../src/img/popular-today/violet-evergarden.jpg">
-                                <p class="fs-6 mt-1"><?php echo $film['actor']; ?></p>
+                                <p class="fs-6 mt-1"><?= $film->actor ?></p>
                             </div>
                             <div class="text-center">
                                 <img class="border-2 purple-border rounded-circle" width="80px" height="80px" alt="photo de profil" src="../src/img/popular-today/violet-evergarden.jpg">

@@ -99,6 +99,8 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
                     <th scope="col">#id</th>
                     <th scope="col">Titre</th>
                     <th scope="col">URL1</th>
+                    <th scope="col">URL2</th>
+                    <th scope="col">Ajouté par</th>
                     <th scope="col" class="text-center">Supprimer de la bdd</th>
                 </tr>
             </thead>
@@ -106,8 +108,12 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
                 <?php while($films = mysqli_fetch_array($film)): ?>
                 <tr>
                     <th scope="row"><?php echo $films['id']; ?></th>
-                    <td><?php echo $films['title']; ?></td>
+                    <td><a href="../anime.php?id_film=<?php echo $films['id']; ?> "><?php echo $films['title']; ?></a></td>
                     <td><?php echo $films['url']; ?></td>
+                    <td><?php echo $films['url2']; ?></td>
+                    <td><?php echo $films['add_by']; ?></td><td class="text-center">
+                        <a href="add_film.php?id_film=<?php echo $films['id'] ?>" class="btn btn-danger btn-sm">Modifier</a>
+                    </td>
                     <td class="text-center">
                         <a href="delete.php?id_film=<?php echo $films['id'] ?>" class="btn btn-danger btn-sm"
                         onclick="return confirm('Êtes-vous sur de vouloir supprimer définitivement le film <?php echo $films['title'] ?> ?')">Supprimer</a>

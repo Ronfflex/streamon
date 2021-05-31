@@ -1,5 +1,12 @@
 <?php require 'inc/header.php'; ?>
+<?php require_once 'inc/db.php'; ?>
+<?php
 
+$film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 6');
+
+
+
+?>
 
     <!-- CAROUSEL -->
     <header id="carouselExampleCaptions" class="carousel slide navbar-margin" data-bs-ride="carousel">
@@ -51,54 +58,16 @@
                 <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
             </div>
             <div class="row mx-0 px-5 pt-4 pb-5 mb-5 dark-bg">
+                <?php while($films = mysqli_fetch_array($film)): ?>
                 <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
+                    <a href="../anime.php?id_film=<?php echo $films['id']; ?>" class="card m-3 border-0 dark-bg">
                         <img src="src/img/popular-today/le-voyage-de-chihiro.jpg" class="shadow imgw" style="border-radius: 16px;" alt="Affiche du film Le voyage de Chihiro">
                         <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Le voyage de Chihiro</p>
+                            <p class="card-text text-center purple"><?php echo $films['title']; ?></p>
                         </div>
                     </a>
                 </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/a-silent-voice.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche du film A Silent Voice">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">A Silent Voice</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/mon-voisin-totoro.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche du film Mon voisin Totoro">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Mon voisin Totoro</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/re-zero.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche de la série animée Re:Zero">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Re:Zero</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/the-promise-neverland.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche de la série animée The Promised Neverland">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">The Promised Neverland</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/violet-evergarden.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche du film Violet Evergarden">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Violet Evergarden</p>
-                        </div>
-                    </a>
-                </div>
+                <?php endwhile; ?>
             </div>
         </section>
         

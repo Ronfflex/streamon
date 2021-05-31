@@ -70,7 +70,6 @@ if(!empty($_POST)) {
       if(!empty($_POST['username']) && !empty($_POST['password']) && empty($_POST['email']) && empty($_POST['password_confirm'])){
         $username = htmlspecialchars($_POST['username']);
         $pwd = htmlspecialchars($_POST['password']);
-        $mail = htmlspecialchars($_POST['email']);
 
         $req = $pdo->prepare('SELECT * FROM member WHERE (username = :username OR mail = :username)');
         $req->execute(['username' => $_POST['username']]);

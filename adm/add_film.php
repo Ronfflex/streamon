@@ -3,6 +3,26 @@ require '../inc/functions.php';
 admin_only();
 require_once '../inc/db.php';
 
+
+if(!empty($_GET) && !empty($_GET['id_film'])){
+    $id_film = htmlspecialchars($_GET['id_film']);
+    $req = $pdo->prepare('SELECT * FROM film WHERE id = ?');
+    $req->execute([$id_film]);
+    
+    if($film->rowCount() == 1){
+
+    }else{
+        $_SESSION['flash']['danger'] = 'Aucun film trouvé';
+        header('Location: potatodashboard.php');
+        exit;
+    }
+}
+
+
+
+
+
+
 if(!empty($_POST)) {
 $errors = array();
 
@@ -14,20 +34,22 @@ $errors = array();
             $release = date('Y-m-d', strtotime($_POST['release']));
             $synopsis = htmlspecialchars($_POST['synopsis']);
             $actor = htmlspecialchars($_POST['actor']);
+            $add_by = $_SESSION['auth']->username;
             
             if(empty($url2)){
                 $url2 = NULL;
             }
 
 
-            $req = $pdo->prepare('INSERT INTO film (title, url, url2, release_date, synopsis, actor, add_date) VALUES (?, ?, ?, ?, ?, ?, NOW())');
+            $req = $pdo->prepare('INSERT INTO film (title, url, url2, release_date, synopsis, actor, add_date, add_by) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)');
             $req->execute([
                 $film_name,
                 $url1,
                 $url2,
                 $release,
                 $synopsis,
-                $actor
+                $actor,
+                $add_by
             ]);
             $_SESSION['flash']['success'] = 'Film ajouté.';
             header('Location: add_film.php');
