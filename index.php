@@ -61,7 +61,7 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 6');
                 <?php while($films = mysqli_fetch_array($film)): ?>
                 <div class="col">
                     <a href="../anime.php?id_film=<?php echo $films['id']; ?>" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/le-voyage-de-chihiro.jpg" class="shadow imgw" style="border-radius: 16px;" alt="Affiche du film Le voyage de Chihiro">
+                        <img src="src/img/film/<?php echo $films['id']; ?>.jpg" class="shadow imgw" style="border-radius: 16px;" alt="Affiche du film <?php echo $films['title']; ?>.">
                         <div class="card-body pb-2">
                             <p class="card-text text-center purple"><?php echo $films['title']; ?></p>
                         </div>

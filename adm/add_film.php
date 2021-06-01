@@ -42,7 +42,35 @@ $errors = array();
                 $url2 = NULL;
             }
 
-            if($edit_mod === true){
+            if($edit_mod === false){
+                if(isset($_FILES['miniature']) && !empty($_FILES['miniature']['name'])){
+                    $req = $pdo->prepare('INSERT INTO film (title, url, url2, release_date, synopsis, actor, add_date, add_by) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)');
+                    $req->execute([
+                        $film_name,
+                        $url1,
+                        $url2,
+                        $release,
+                        $synopsis,
+                        $actor,
+                        $add_by
+                    ]);
+                    $lastid = $pdo->lastInsertId();
+
+                    //var_dump(exif_imagetype($_FILES['miniature']['tmp_name']));
+                    if(exif_imagetype($_FILES['miniature']['tmp_name']) == 2){
+                        $path = '../src/img/film/' . "$lastid" . '.jpg';
+                        move_uploaded_file($_FILES['miniature']['tmp_name'], $path);
+
+                        $_SESSION['flash']['success'] = 'Film ajouté.';
+                        header('Location: add_film.php');
+                        exit;
+                    }else{
+                        $errors['img_type'] = 'La miniature doit obligatoirement être au format: .jpg || .jpeg';
+                    }
+                }else{
+                    $errors['img'] = 'La miniature est obligatoire.';
+                }
+            }else{
                 $req = $pdo->prepare('UPDATE film SET title = ?, url = ?, url2 = ?, release_date = ?, synopsis = ?, actor = ?, edit_date = NOW(), edit_by = ? WHERE id = ?');
                 $req->execute([
                     $film_name,
@@ -55,22 +83,8 @@ $errors = array();
                     $id_film
                 ]);
                 $_SESSION['flash']['success'] = 'Film modifié.';
-                header('Location: add_film.php');
-                exit;
-            }else{
-                $req = $pdo->prepare('INSERT INTO film (title, url, url2, release_date, synopsis, actor, add_date, add_by) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)');
-                $req->execute([
-                    $film_name,
-                    $url1,
-                    $url2,
-                    $release,
-                    $synopsis,
-                    $actor,
-                    $add_by
-                ]);
-                $_SESSION['flash']['success'] = 'Film ajouté.';
-                header('Location: add_film.php');
-                exit;
+                header('Location: potatodashboard.php');
+                exit; 
             }
         }else{
             $errors['fields'] = 'Veuillez remplir tous les champs obligatoires.';
@@ -128,40 +142,48 @@ $errors = array();
         <a href="../index.php" class="btn btn-primary mb-5">Acceuil</a>
         <a href="potatodashboard.php" class="btn btn-primary mb-5">Dashboard</a>
         
-        <div class="row d-flex align-items-center">
-            <!-- MINIATURE
-            <form class="col-3" name="add_film" enctype="multipart/form-data" action="" method="post">
-                MAX_FILE_SIZE détermine la taille max d'un fichier côté client et doit précéder l'input du fichier
-                <input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
-                Miniature : <input name="image" type="file" /><br>
-                <input type="submit" name="send" value="Upload" />
-            </form>
-             -->
-            <form action="" class="col-9 row py-3 px-2" method="POST">
-                <div class="col-12 mb-3 ps-2 pe-1">
-                    <label for="inputFilmName" class="text-uppercase fw-bold fs-5 mb-1">Titre du film*</label>
-                    <input type="text" name="filmName" class="form-control py-2" id="inputFilmName" placeholder="Nom du film" value="<?= $film->title; ?>">
+        
+            <form action="" class="d-flex row align-items-center py-3 px-2" method="POST" enctype="multipart/form-data">
+                <div class="row col-9">
+                    <div class="col-12 mb-3 ps-2 pe-1">
+                        <label for="inputFilmName" class="text-uppercase fw-bold fs-5 mb-1">Titre du film*</label>
+                        <input type="text" name="filmName" class="form-control py-2" id="inputFilmName" placeholder="Nom du film" value="<?= $film->title; ?>">
+                    </div>
+                    <div class="col-12 mb-3 ps-2 pe-1">
+                        <label for="inputUrl1" class="text-uppercase fw-bold fs-5 mb-1">URL Uptobox*</label>
+                        <input type="text" name="url1" class="form-control py-2" id="inputUrl1" placeholder="URL Uptobox" value="<?= $film->url; ?>">
+                    </div>
+                    <div class="col-12 mb-3 ps-2 pe-1">
+                        <label for="inputUrl2" class="text-uppercase fw-bold fs-5 mb-1">URL VeryStream</label>
+                        <input type="text" name="url2" class="form-control py-2" id="inputUrl2" placeholder="URL VeryStream" value="<?= $film->url2; ?>">
+                    </div>
+                    <div class="col-12 mb-3 ps-2 pe-1">
+                        <label for="inputRelease" class="text-uppercase fw-bold fs-5 mb-1">Date de sortie*</label>
+                        <input type="date" name="release" class="form-control py-2" id="inputRelease" value="<?= $film->release_date; ?>">
+                    </div>
+                    <div class="col-12 mb-3 ps-2 pe-1">
+                        <label for="inputSynospis" class="text-uppercase fw-bold fs-5 mb-1">Synopsis*</label>
+                        <textarea name="synopsis" class="form-control py-2" id="inputSynospis" placeholder="Synopsis"><?= $film->synopsis; ?></textarea>
+                    </div>
+                    <div class="col-12 mb-3 ps-2 pe-1">
+                        <label for="inputActor" class="text-uppercase fw-bold fs-5 mb-1">Réalisateur(s) et Doubleurs*</label>
+                        <input type="text" name="actor" class="form-control py-2" id="inputActor" placeholder="Réalisateur(s) et Doubleurs" value="<?= $film->actor; ?>">
+                    </div>
                 </div>
-                <div class="col-12 mb-3 ps-2 pe-1">
-                    <label for="inputUrl1" class="text-uppercase fw-bold fs-5 mb-1">URL Uptobox*</label>
-                    <input type="text" name="url1" class="form-control py-2" id="inputUrl1" placeholder="URL Uptobox" value="<?= $film->url; ?>">
+
+                <!-- miniature -->
+                <div class="col-3">
+                <?php if($edit_mod === false): ?>
+                    <label for="inputeMiniature" class="text-uppercase fw-bold fs-5 mb-1">Miniature*</label><br>
+                    <!-- MAX_FILE_SIZE must precede the file input field -->
+                    <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
+                    <input type="file" name="miniature" id="inputeMiniature">
+                <?php else: ?>
+                    <img src="../src/img/film/<?= $film->id; ?>.jpg" class="img-fluid shadow">
+                <?php endif; ?>
                 </div>
-                <div class="col-12 mb-3 ps-2 pe-1">
-                    <label for="inputUrl2" class="text-uppercase fw-bold fs-5 mb-1">URL VeryStream</label>
-                    <input type="text" name="url2" class="form-control py-2" id="inputUrl2" placeholder="URL VeryStream" value="<?= $film->url2; ?>">
-                </div>
-                <div class="col-12 mb-3 ps-2 pe-1">
-                    <label for="inputRelease" class="text-uppercase fw-bold fs-5 mb-1">Date de sortie*</label>
-                    <input type="date" name="release" class="form-control py-2" id="inputRelease" value="<?= $film->release_date; ?>">
-                </div>
-                <div class="col-12 mb-3 ps-2 pe-1">
-                    <label for="inputSynospis" class="text-uppercase fw-bold fs-5 mb-1">Synopsis*</label>
-                    <textarea name="synopsis" class="form-control py-2" id="inputSynospis" placeholder="Synopsis"><?= $film->synopsis; ?></textarea>
-                </div>
-                <div class="col-12 mb-3 ps-2 pe-1">
-                    <label for="inputActor" class="text-uppercase fw-bold fs-5 mb-1">Réalisateur(s) et Doubleurs*</label>
-                    <input type="text" name="actor" class="form-control py-2" id="inputActor" placeholder="Réalisateur(s) et Doubleurs" value="<?= $film->actor; ?>">
-                </div>
+
+
                 <div class="col-12 mb-3 ps-2 pe-1">
                     <input type="submit" name="add_film" value="Ajouter">
                 </div>
@@ -173,7 +195,6 @@ $errors = array();
                 </button>
             </div>
             -->
-        </div>
     </div>
 
 

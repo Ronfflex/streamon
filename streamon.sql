@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 30, 2021 at 11:31 PM
+-- Generation Time: Jun 01, 2021 at 11:45 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -37,16 +37,18 @@ CREATE TABLE `film` (
   `release_date` date NOT NULL,
   `synopsis` text NOT NULL,
   `actor` varchar(255) NOT NULL,
-  `add_date` datetime NOT NULL
+  `add_date` datetime NOT NULL,
+  `add_by` varchar(50) NOT NULL,
+  `edit_date` datetime DEFAULT NULL,
+  `edit_by` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `film`
 --
 
-INSERT INTO `film` (`id`, `title`, `url`, `url2`, `miniature`, `release_date`, `synopsis`, `actor`, `add_date`) VALUES
-(3, 'Mon premier film test', 'https://uptostream.com/cu7r8715nqcq', '', NULL, '2021-05-28', 'Il était une fois le premier film ajouté au site StreamOn', 'Ronflex Streamon', '2021-05-30 19:19:55'),
-(6, 'High School DxD', 'https://uptostream.com/f0l5yiolmo74', NULL, NULL, '2002-04-25', 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet amet inventore magni illum nostrum minus facere ex, repellat nihil. Ut id laborum possimus esse. A odio at assumenda eaque magnam.\r\n', 'Moi Même', '2021-05-31 00:26:32');
+INSERT INTO `film` (`id`, `title`, `url`, `url2`, `miniature`, `release_date`, `synopsis`, `actor`, `add_date`, `add_by`, `edit_date`, `edit_by`) VALUES
+(20, 'Le Château Ambulant', 'https://uptostream.com/iframe/v4jt2gp7u0gv', NULL, NULL, '2004-11-20', 'Une jeune fille de dix-huit ans, Sophie, qui travaille dans le magasin de son défunt père, rencontre par hasard un mystérieux sorcier nommé Hauru, lors d\'une course poursuite. Celui-ci la prend alors en sympathie. Cependant la sorcière des Landes, qui est amoureuse de Hauru, devient jalouse de l\'attention portée à Sophie par ce dernier. Pour se venger, elle décide de transformer la jeune fille en une vieille dame de quatre-vingt-dix ans. Incapable de révéler cette transformation à sa famille, elle s\'enferme chez elle, puis s\'enfuit...', 'Hayao Miyazaki', '2021-06-02 01:33:20', 'Ronflex', '2021-06-02 01:44:49', 'Ripbouboul1');
 
 -- --------------------------------------------------------
 
@@ -84,7 +86,7 @@ INSERT INTO `member` (`id`, `username`, `mail`, `password`, `confirmation_token`
 (25, 'Identiaidnfkj14', 'Identiaidnfkj14@gmail.com', '$2y$10$v9CYH.h8LfMMiXBDm5zUJ.WpdygbRDyavkPDKdgsZguf.UqZ2Qa/.', NULL, '2021-05-30 18:13:11', NULL, NULL, NULL, 0, 0),
 (28, 'Pseudo1234', 'Pseudo1234!@gmail.com', '$2y$10$.mq07kNWTKgc3V84GndQHO3KGGUPU323Oy2B.delzkySdPK9Kt2Ly', 'r5SpC6eGKot39k5Z9PTD10gaYVY2rkXIGdDpd1N1y0RsdBOcm6r1Mx1iq5uz', NULL, NULL, NULL, NULL, 0, 0),
 (29, 'Pseudo1235', 'Pseudo1235!@gmail.com', '$2y$10$opMLGrbJoP37gh3OWMmpo.vZrwU6I7rp//uJ9T.sJ8GhiFXHcDKXe', 'eEyTmPs11YaUqLV1PXoSsVAGMoBt9aSkr8bvK1pHaNEljStSYhZdCybFQ9Vk', NULL, NULL, NULL, NULL, 0, 0),
-(30, 'Ripbouboul1', 'Ripbouboul1!@gmail.com', '$2y$10$VCZl/hFTf6zqtPsiDhbGF.Mg2zeWQspHz6fKK96LJhRIvdkCImEOO', NULL, '2021-05-30 18:11:47', NULL, NULL, NULL, 0, 0);
+(30, 'Ripbouboul1', 'Ripbouboul1!@gmail.com', '$2y$10$VCZl/hFTf6zqtPsiDhbGF.Mg2zeWQspHz6fKK96LJhRIvdkCImEOO', NULL, '2021-05-30 18:11:47', NULL, NULL, NULL, 0, 1);
 
 --
 -- Indexes for dumped tables
@@ -110,7 +112,7 @@ ALTER TABLE `member`
 -- AUTO_INCREMENT for table `film`
 --
 ALTER TABLE `film`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `member`
