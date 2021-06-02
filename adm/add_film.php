@@ -3,9 +3,10 @@ require '../inc/functions.php';
 admin_only();
 require_once '../inc/db.php';
 
+setlocale(LC_TIME, 'fr');
 $edit_mod = false;
 
-// EDIT
+// EDIT MODE => TRUE
 if(!empty($_GET) && !empty($_GET['id_film'])){
     $edit_mod = true;
     $id_film = htmlspecialchars($_GET['id_film']);
@@ -21,103 +22,118 @@ if(!empty($_GET) && !empty($_GET['id_film'])){
     }
 }
 
-
-
-
-
 if(!empty($_POST)) {
 $errors = array();
 
+    // ADD FILM
     if(isset($_POST['add_film'])){
+        // Fields
         if(empty($_POST['filmName']) || empty($_POST['url1']) || empty($_POST['release']) || empty($_POST['synopsis']) || empty($_POST['actor'])){
             $errors['fields'] = 'Veuillez remplir tous les champs obligatoires.';
         }else{
-            $filter = '/^[a-zA-Z0-9\.\?\!\,\;\'\:\-\éÉèÈàÀêÊùÙçÇïÏ\ ]*$/';
-            if(!preg_match($filter, $_POST['filmName']) || !preg_match($filter, $_POST['synopsis']) || !preg_match($filter, $_POST['actor'])){
+            // Character
+            $filter_char = '/^[a-zA-Z0-9\.\…\?\!\,\;\'\’\:\-\éÉèÈàÀêÊùÙçÇïÏ\ ]*$/';
+            if(!preg_match($filter_char, $_POST['filmName']) || !preg_match($filter_char, $_POST['synopsis']) || !preg_match($filter_char, $_POST['actor'])){
                 $errors['char'] = 'Charactère(s) invalide(s).';
-            }else{
-                $film_name = htmlspecialchars($_POST['filmName']);
-                $url1 = htmlspecialchars($_POST['url1']);
-                $url2 = htmlspecialchars($_POST['url2']);
-                $release = date('Y-m-d', strtotime($_POST['release']));
-                $synopsis = htmlspecialchars($_POST['synopsis']);
-                $actor = htmlspecialchars($_POST['actor']);
-                $add_by = $_SESSION['auth']->username;
+            }
+
+            $film_name = htmlspecialchars($_POST['filmName']);
+            $url1 = htmlspecialchars($_POST['url1']);
+            $url2 = htmlspecialchars($_POST['url2']);
+            $release = date('Y-m-d', strtotime($_POST['release']));
+            $synopsis = htmlspecialchars($_POST['synopsis']);
+            $actor = htmlspecialchars($_POST['actor']);
+            $add_by = $_SESSION['auth']->username;
+
+            if(empty($url2)){
+                $url2 = NULL;
+            }
+
+            $url1_verify = filter_var($_POST['url1'], FILTER_VALIDATE_URL) && preg_match('/^https\:\/\/uptostream\.com\/iframe\/[a-z0-9_]*$/', $_POST['url1']);
+            $url2_verify = filter_var($_POST['url2'], FILTER_VALIDATE_URL) && $url2 != NULL;
+            //$url2_verify = filter_var($_POST['url2'], FILTER_VALIDATE_URL) && preg_match('/^https\:\/\/uptostream\.com\/iframe\/[a-z0-9_]*$/', $_POST['url2']);
+
+            // ADD NEW FILM
+            if($edit_mod === false){
+                // Miniature exist
+                if(!isset($_FILES['miniature']) || empty($_FILES['miniature']['name'])){
+                    $errors['img'] = 'La miniature est obligatoire.';
+                // Miniature format
+                }elseif(isset($_FILES['miniature']) && !empty($_FILES['miniature']['name']) && exif_imagetype($_FILES['miniature']['tmp_name']) != 2){
+                    $errors['img_type'] = 'La miniature doit obligatoirement être au format: .jpg';
+                }
                 
-                if(empty($url2)){
-                    $url2 = NULL;
+                // Url
+                if(!$url1_verify && ($url2 === NULL || $url2_verify)){
+                    $errors['url'] = 'Url Uptostream invalide.';
+                }elseif(!$url2_verify && $url1_verify){
+                    $errors['url'] = 'Url secondaire invalide.';
+                }elseif(!$url1_verify && !$url2_verify){
+                    $errors['url'] = 'Url invalides.';
                 }
 
-                $url1_verify = filter_var($_POST['url1'], FILTER_VALIDATE_URL) && preg_match('/^https\:\/\/uptostream\.com\/iframe\/[a-z0-9_]*$/', $_POST['url1']);
-                $url2_verify = filter_var($_POST['url2'], FILTER_VALIDATE_URL) && $url2 != NULL;
-                //$url2_verify = filter_var($_POST['url2'], FILTER_VALIDATE_URL) && preg_match('/^https\:\/\/uptostream\.com\/iframe\/[a-z0-9_]*$/', $_POST['url2']);
+                // Date
+                //$vfar = date('d-m-Y', strtotime($_POST['release']));
+                //$filter_date = '/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/';
+                //if(!preg_match('/#(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)#/', $vfar)){
+                //    $errors['date'] = 'Date invalide.';
+                //}
 
-                // ADD NEW
-                if($edit_mod === false){
-                    if(!isset($_FILES['miniature']) || empty($_FILES['miniature']['name'])){
-                        $errors['img'] = 'La miniature est obligatoire.';
-                    }else{
-                        if(exif_imagetype($_FILES['miniature']['tmp_name']) != 2){
-                            $errors['img_type'] = 'La miniature doit obligatoirement être au format: .jpg';
-                        }else{
-                            if(!$url1_verify && ($url2 === NULL || $url2_verify)){
-                                $errors['url'] = 'Url Uptostream invalide.';
-                            }elseif(!$url2_verify && $url1_verify){
-                                $errors['url'] = 'Url secondaire invalide.';
-                            }elseif(!$url1_verify && !$url2_verify){
-                                $errors['url'] = 'Url invalides.';
-                            }else{
-                                //var_dump(exif_imagetype($_FILES['miniature']['tmp_name']));
-                                $req = $pdo->prepare('INSERT INTO film (title, url, url2, release_date, synopsis, actor, add_date, add_by) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)');
-                                $req->execute([
-                                    $film_name,
-                                    $url1,
-                                    $url2,
-                                    $release,
-                                    $synopsis,
-                                    $actor,
-                                    $add_by
-                                ]);
-                                // Image upload
-                                $lastid = $pdo->lastInsertId();
-                                $path = '../src/img/film/' . "$lastid" . '.jpg';
-                                move_uploaded_file($_FILES['miniature']['tmp_name'], $path);
+                // Informations sent to db
+                if(empty($errors)){
+                    $req = $pdo->prepare('INSERT INTO film (title, url, url2, release_date, synopsis, actor, add_date, add_by) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)');
+                    $req->execute([
+                        $film_name,
+                        $url1,
+                        $url2,
+                        $release,
+                        $synopsis,
+                        $actor,
+                        $add_by
+                    ]);
+                    // image upload
+                    $lastid = $pdo->lastInsertId();
+                    $path = '../src/img/film/' . "$lastid" . '.jpg';
+                    move_uploaded_file($_FILES['miniature']['tmp_name'], $path);
 
-                                $_SESSION['flash']['success'] = 'Film ajouté.';
-                                header('Location: add_film.php');
-                                exit;
-                            }
-                        }
-                    }
-                // EDIT;
-                }else{
-                    if(!$url1_verify && ($url2 === NULL || $url2_verify)){
-                        $errors['url'] = 'Url Uptostream invalide.';
-                    }elseif(!$url2_verify && $url1_verify){
-                        $errors['url'] = 'Url secondaire invalide.';
-                    }elseif(!$url1_verify && !$url2_verify){
-                        $errors['url'] = 'Url invalides.';
-                    }else{
-                        $req = $pdo->prepare('UPDATE film SET title = ?, url = ?, url2 = ?, release_date = ?, synopsis = ?, actor = ?, edit_date = NOW(), edit_by = ? WHERE id = ?');
-                        $req->execute([
-                            $film_name,
-                            $url1,
-                            $url2,
-                            $release,
-                            $synopsis,
-                            $actor,
-                            $add_by,
-                            $id_film
-                        ]);
-                        $_SESSION['flash']['success'] = 'Film modifié.';
-                        header('Location: potatodashboard.php');
-                        exit;
-                    }
+                    $_SESSION['flash']['success'] = 'Film ajouté.';
+                    header('Location: add_film.php');
+                    exit;
                 }
+            }
+
+
+            // EDIT FILM
+            // Url
+            if(!$url1_verify && ($url2 === NULL || $url2_verify)){
+                $errors['url'] = 'Url Uptostream invalide.';
+            }elseif($url1_verify && !$url2_verify && $url2 != NULL){
+                $errors['url'] = 'Url secondaire invalide.';
+            }elseif(!$url1_verify && !$url2_verify){
+                $errors['url'] = 'Url invalides.';
+            }
+
+            // Informations sent to db
+            if(empty($errors)){
+                $req = $pdo->prepare('UPDATE film SET title = ?, url = ?, url2 = ?, release_date = ?, synopsis = ?, actor = ?, edit_date = NOW(), edit_by = ? WHERE id = ?');
+                $req->execute([
+                    $film_name,
+                    $url1,
+                    $url2,
+                    $release,
+                    $synopsis,
+                    $actor,
+                    $add_by,
+                    $id_film
+                ]);
+                $_SESSION['flash']['success'] = 'Film modifié.';
+                header('Location: potatodashboard.php');
+                exit;
             }
         }
     }
 }
+
 
 
 
@@ -140,7 +156,6 @@ $errors = array();
 </head>
 
 <body>
-
     <!-- Show errors -->
     <?php if(!empty($errors)): ?>
     <div class="alert alert-danger mb-0">

@@ -3,6 +3,7 @@ require '../inc/functions.php';
 admin_only();
 require_once '../inc/db.php';
 
+setlocale(LC_TIME, 'fr');
 
 $req = mysqli_query($con,'SELECT * FROM member ORDER BY id DESC LIMIT 10');
 //$req = $pdo->prepare('SELECT * FROM member');
@@ -48,7 +49,7 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
         <a href="add_series.php" class="btn btn-primary mb-5">Ajouter une série</a>
 
 
-        <!-- Show members -->
+        <!-- SHOW MEMBERS -->
         <div class="purple-bg p-2 mb-4">
         <h2 class="fs-3 mb-3 py-2 ps-2 fw-bold text-white">Membres inscrits</h2>
         <table class="table table-light mb-0">
@@ -70,7 +71,7 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
                     <td><?php echo $member['username']; ?></td>
                     <td><?php echo $member['mail']; ?></td>
                     <td class="text-center"><?php if(!empty($member['confirmation_token']) || $member['confirmation_token'] == 'BANNED'){ ?>
-                    <a href="../confirm.php?id=<?php echo $member['id'] ?>&token=<?php echo $member['confirmation_token'] ?>" class="btn btn-primary btn-sm">Confirmer</a><?php }else{echo $member['confirmed_at'];} ?></td>
+                    <a href="../confirm.php?id=<?php echo $member['id'] ?>&token=<?php echo $member['confirmation_token'] ?>" class="btn btn-primary btn-sm">Confirmer</a><?php }else{echo strftime('%c',strtotime($member['confirmed_at']));} ?></td>
                     <td class="text-center">
                         <a href="mailpassword.php?mail=<?php echo $member['mail'] ?>" class="btn btn-primary btn-sm me-2">Mail</a>
                         <a href="manualpassword.php?mail=<?php echo $member['mail'] ?>" class="btn btn-primary btn-sm">Manuel</a>
@@ -88,7 +89,7 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
         </div>
 
 
-        <!-- Show films -->
+        <!-- SHOW FILMS -->
         <div class="purple-bg p-2">
         <h2 class="fs-3 mb-3 py-2 ps-2 fw-bold text-white">Films</h2>
         <table class="table table-light mb-0">
@@ -98,8 +99,8 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
                     <th scope="col">Titre</th>
                     <th scope="col">URL1</th>
                     <th scope="col">URL2</th>
-                    <th scope="col" class="text-center">Ajouté par ... le aaaa/mm/jj</th>
-                    <th scope="col" class="text-center">Edité par ... le aaaa/mm/jj</th>
+                    <th scope="col" class="text-center">Ajouté par ... le ...</th>
+                    <th scope="col" class="text-center">Edité par ... le ...</th>
                     <th scope="col" class="text-center">Modifier</th>
                     <th scope="col" class="text-center">Supprimer de la bdd</th>
                 </tr>
@@ -109,10 +110,10 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
                 <tr>
                     <th scope="row"><?php echo $films['id']; ?></th>
                     <td><a href="../anime.php?id_film=<?php echo $films['id']; ?> "><?php echo $films['title']; ?></a></td>
-                    <td><?php echo $films['url']; ?></td>
-                    <td><?php echo $films['url2']; ?></td>
-                    <td class="text-center"><?php echo $films['add_by'] . '<br>' . $films['add_date'];?></td>
-                    <td class="text-center"><?php echo $films['edit_by'] . '<br>' . $films['edit_date'];?></td>
+                    <td><a href="<?php echo $films['url']; ?>" target="_blank"><?php echo $films['url']; ?></a></td>
+                    <td><a href="<?php echo $films['url2']; ?>" target="_blank"><?php echo $films['url2']; ?></a></td>
+                    <td class="text-center"><?php echo $films['add_by'] . '<br>' . strftime('%c',strtotime($films['add_date']));?></td>
+                    <td class="text-center"><?php echo $films['edit_by']; ?><br><?php if($films['edit_date'] !== NULL){echo strftime('%c',strtotime($films['edit_date']));}?></td>
                     <td class="text-center">
                         <a href="add_film.php?id_film=<?php echo $films['id']; ?>" class="btn btn-primary btn-sm">Modifier</a>
                     </td>
