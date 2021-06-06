@@ -13,50 +13,69 @@ if(!empty($_POST)) {
 
   // REGISTER
   if(isset($_POST['register'])){
-    // Username
-    if(empty($_POST['username']) || !preg_match('/^[a-z0-9A-Z_]+$/', $_POST['username'])){
-      $errors['username'] = "Pseudo invalide";
-    } else {
-      $req = $pdo->prepare('SELECT id FROM member WHERE username = ?');
-      $req->execute([$_POST['username']]);
-      $member = $req->fetch();
-      if($member){
-        $errors['username'] = 'Ce pseudo est déjà utilisé';
+    // Fields not empty
+    if(empty($_POST['username']) || empty($_POST['email']) ||  empty($_POST['password']) || empty($_POST['password_confirm'])){
+        $errors['fields'] = 'Veuillez remplir tous les champs obligatoires.';
+    }else{
+      // Username
+      if(!preg_match('/^[a-z0-9A-Z_]{2,30}$/', $_POST['username'])){
+        $errors['username'] = 'Pseudo invalide. Il doit faire entre 2 et 30 caractères et ne doit pas contenir de caractères spéciaux à l\'exeption du underscore.';
+      }else{
+        $req = $pdo->prepare('SELECT id FROM member WHERE username = ?');
+        $req->execute([$_POST['username']]);
+        $member = $req->fetch();
+        if($member){
+          $errors['username'] = 'Ce pseudo est déjà utilisé';
+        }
       }
-    }
-    // Email
-    if(empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-      $errors['email'] = 'Email invalide';
-    } else {
-      $req = $pdo->prepare('SELECT id FROM member WHERE mail = ?');
-      $req->execute([$_POST['email']]);
-      $mail = $req->fetch();
-      if($mail){
-        $errors['email'] = 'Un compte est déjà enregistré avec ce mail';
-      }
-    }
-    // Password
-    if(empty($_POST['password']) || !preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,50}$/", $_POST['password'])){
-      $errors['password'] = 'Le mot de passe doit contenir au moins 8 caractères dont au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial @$!%*?&';
-    }
-    // Password confirmation
-    if(empty($_POST['password_confirm']) || $_POST['password'] != $_POST['password_confirm']){
-      $errors['password_confirm'] = 'Les mots de passes ne correspondent pas';
-    }
-    // Informations sent to db
-    if(empty($errors)){
-      $username = htmlspecialchars($_POST['username']);
-      $pwd = htmlspecialchars($_POST['password']);
-      $mail = htmlspecialchars($_POST['email']);
 
-      $req = $pdo->prepare('INSERT INTO member (username, password, mail, confirmation_token) VALUES (?, ?, ?, ?)');
-      $pwd = password_hash($_POST['password'], PASSWORD_BCRYPT);
-      $token = str_random(60);
-      $req->execute([
-        $username,
-        $pwd,
-        $mail,
-        $token
+
+      // Email
+      $email = htmlspecialchars(trim($_POST['email'])); // Voir si ok de ranger ca comme ca dans la bdd ?
+
+      if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) || strlen($email) < 3 || strlen($email) > 255){
+        $errors['email'] = 'Email invalide';
+      }else{
+        $req = $pdo->prepare('SELECT id FROM member WHERE mail = ?');
+        $req->execute([$_POST['email']]);
+        $mail = $req->fetch();
+        if($mail){
+          $errors['email'] = 'Un compte est déjà enregistré avec ce mail';
+        }
+      }
+
+
+      // Password
+      $pass = $_POST['password'];
+      $uppercase = preg_match('@[A-Z]@', $pass);
+      $lowercase = preg_match('@[a-z]@', $pass);
+      $number = preg_match('@[0-9]@', $pass);
+      $specialChars = preg_match('@[^\w]@', $pass);
+
+      if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($pass) < 8 || strlen($pass) > 255){
+        $errors['password'] = 'Le mot de passe doit contenir au moins 8 caractères dont au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial.';
+      }
+
+      // Password confirmation
+      if($_POST['password'] != $_POST['password_confirm']){
+        $errors['password_confirm'] = 'Les mots de passes ne correspondent pas';
+      }
+
+
+      // Informations sent to db
+      if(empty($errors)){
+        $username = htmlspecialchars(trim($_POST['username']));
+        $pwd = htmlspecialchars($_POST['password']);
+        $mail = htmlspecialchars(trim($_POST['email']));
+
+        $req = $pdo->prepare('INSERT INTO member (username, password, mail, confirmation_token) VALUES (?, ?, ?, ?)');
+        $pwd = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $token = str_random(60);
+        $req->execute([
+          $username,
+          $pwd,
+          $mail,
+          $token
         ]);
         $member_id = $pdo->lastInsertId();
         mail($_POST['email'], 'Confirmation de votre compte', "Afin de confirmer votre inscription, merci de cliquer sur ce lien:\n\nhttp://streamon.fr/confirm.php?id=$member_id&token=$token");
@@ -65,12 +84,23 @@ if(!empty($_POST)) {
         exit;
       }
     }
-    // LOGIN
-    if(isset($_POST['login'])){
-      if(!empty($_POST['username']) && !empty($_POST['password']) && empty($_POST['email']) && empty($_POST['password_confirm'])){
-        $username = htmlspecialchars($_POST['username']);
-        $pwd = htmlspecialchars($_POST['password']);
+  }
 
+
+  // LOGIN
+  if(isset($_POST['login'])){
+    // Fields not empty
+    if(empty($_POST['username']) || empty($_POST['password'])){
+        $errors['fields'] = 'Veuillez remplir tous les champs obligatoires.';
+    }else{
+      // Clean
+      $username = htmlspecialchars(trim($_POST['username']));
+      $pwd = htmlspecialchars($_POST['password']);
+
+      // Longer and char verifications
+      if(strlen($username) < 2 || strlen($username) > 255 || strlen($pwd) < 8 || strlen($pwd) > 255){
+        $errors['login'] = 'Identifiant ou mot de passe incorrecte.';
+      }else{
         $req = $pdo->prepare('SELECT * FROM member WHERE (username = :username OR mail = :username)');
         $req->execute(['username' => $_POST['username']]);
         $member = $req->fetch();
@@ -83,36 +113,36 @@ if(!empty($_POST)) {
             $errors['confirmed'] = 'Veuillez consulter vos mails afin de confirmer votre compte.';
           // Connection
           }elseif(password_verify($_POST['password'], $member->password)){
-              $_SESSION['auth'] = $member;
-              $_SESSION['flash']['success'] = 'Vous êtes bien connecté.';
-              if($_POST['remember'] && $member->is_admin != 1){
-                $remember_token = str_random(250); 
-                $pdo->prepare('UPDATE  member SET remember_token = ? WHERE id = ?')->execute([$remember_token, $member->id]);
-                setcookie('remember', $member->id . '==' . $remember_token . sha1($member->id . 'pourlagloire'), strtotime('+7 days'));
-              }
-              if($member->is_admin == 1){
-                header('Location: adm/potatodashboard.php');
-                exit;
-              }else{
-                header('Location: index.php');
-                exit;
-              }
+            $_SESSION['auth'] = $member;
+            $_SESSION['flash']['success'] = 'Vous êtes bien connecté.';
+            if($_POST['remember'] && $member->is_admin != 1){
+              $remember_token = str_random(250); 
+              $pdo->prepare('UPDATE  member SET remember_token = ? WHERE id = ?')->execute([$remember_token, $member->id]);
+              setcookie('remember', $member->id . '==' . $remember_token . sha1($member->id . 'pourlagloire'), strtotime('+7 days'));
+            }
+            if($member->is_admin == 1){
+              header('Location: adm/potatodashboard.php');
+              exit;
             }else{
-              $errors['login'] = 'Identifiant ou mot de passe incorrecte.';
+              header('Location: index.php');
+              exit;
             }
           }else{
             $errors['login'] = 'Identifiant ou mot de passe incorrecte.';
           }
+        }else{
+          $errors['login'] = 'Identifiant ou mot de passe incorrecte.';
         }
       }
     }
+  }
+}
 ?>
 
 
 <?php require 'inc/header.php'; ?>
 
-<div class="text-center d-flex">
-
+<!-- Show errors -->
 <?php if(!empty($errors)): ?>
   <div class="alert alert-danger navbar-margin">
     <p>Erreurs lors de l'inscription :</p>
@@ -124,7 +154,6 @@ if(!empty($_POST)) {
   </div>
 <?php endif; ?>
 
-</div>
     
     <!-- FORMS -->
     <div class="container-fluid w-75 mx-auto border border-secondary dark-bg" style="margin: 22.05vh 0; padding: 4rem 0;">

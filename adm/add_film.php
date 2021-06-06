@@ -82,7 +82,7 @@ $errors = array();
 
             // Synopsys
             if(strlen($synopsis) < 20 || strlen($synopsis) > 1000){
-                $errors['synopsis_longer'] = 'Le synopsis du film doit faire un minimum de 20 et un maximum de 1000 caractères.';
+                $errors['synopsis_longer'] = 'Le synopsis du film doit contenir entre 20 et 1000 caractères.';
             }
             if(!preg_match($filter_char, $_POST['synopsis'])){
                 $errors['synopsis_char'] = 'Le synopsis contient un ou plusieurs caractère(s) invalide(s).';
@@ -182,9 +182,9 @@ $errors = array();
     <div class="alert alert-danger mb-0">
         <p>Erreurs lors de l'ajout du film :</p>
         <ul>
-        <?php foreach($errors as $error): ?>
-            <li class="mt-2"><?= $error; ?></li>
-        <?php endforeach; ?>
+            <?php foreach($errors as $error): ?>
+                <li class="mt-2"><?= $error; ?></li>
+            <?php endforeach; ?>
         </ul>
     </div>
     <?php endif; ?>
