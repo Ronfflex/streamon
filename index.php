@@ -54,7 +54,7 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 6');
         <!-- Popular today -->
         <section>
             <div class="pt-5 d-flex justify-content-between purple-bg">
-                <h2 class="w-25 ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Populaire Aujourd'hui</h2>
+                <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Derniers ajouts</h2>
                 <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
             </div>
             <div class="row mx-0 px-5 pt-4 pb-5 mb-5 dark-bg">
@@ -77,7 +77,7 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 6');
                 <!-- In progress -->
                 <section class="col-12">
                     <div class="pt-5 d-flex justify-content-between purple-bg">
-                        <h2 class="w-25 ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">En Cours</h2>
+                        <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">En Cours</h2>
                         <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
                     </div>
                     <div class="row mx-0 px-5 pt-4 pb-5 mb-5 dark-bg">
@@ -113,7 +113,7 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 6');
                 <!-- Continue to watch -->
                 <section class="col-12">
                     <div class="pt-5 d-flex justify-content-between purple-bg">
-                        <h2 class="w-50 ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Continuer à regarder</h2>
+                        <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Continuer à regarder</h2>
                         <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
                     </div>
                     <div class="row mx-0 px-5 pt-4 pb-5 mb-5 dark-bg">
@@ -145,7 +145,7 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 6');
                     <?php else: ?>
                     <!-- My Watchlist not connected -->
                     <div class="pt-5 d-flex justify-content-between purple-bg">
-                        <h2 class="w-25 ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Ma Watchlist</h2>
+                        <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Ma Watchlist</h2>
                         <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
                     </div>
                     <div class="row mx-0 px-5 pt-4 pb-5 dark-bg">
@@ -165,8 +165,8 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 6');
             
             <!-- Popular Animes -->
             <section class="col-4">
-                <div class="pt-5 purple-bg">
-                    <h2 class="w-75 ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Animes Populaires</h2>
+                <div class="d-flex pt-5 purple-bg">
+                    <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Animes Populaires</h2>
                 </div>
                 <div class="mx-0 px-4 pt-3 pb-2 mb-5 dark-bg">
                     <div class="row mb-4 mx-2 p-2 rounded-3 light-bg">
@@ -249,7 +249,7 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 6');
         <!-- My Watchlist -->
         <section>
             <div class="pt-5 d-flex justify-content-between purple-bg">
-                <h2 class="w-25 ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Ma Watchlist</h2>
+                <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Ma Watchlist</h2>
                 <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
             </div>
             <div class="row mx-0 px-5 pt-4 pb-5 dark-bg">
