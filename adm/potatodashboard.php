@@ -3,7 +3,7 @@ require '../inc/functions.php';
 admin_only();
 require_once '../inc/db.php';
 
-setlocale(LC_TIME, 'fr');
+setlocale(LC_TIME, 'fr_FR');
 
 $req = mysqli_query($con,'SELECT * FROM member ORDER BY id DESC LIMIT 10');
 //$req = $pdo->prepare('SELECT * FROM member');

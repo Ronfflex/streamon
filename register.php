@@ -2,11 +2,14 @@
 require_once 'inc/functions.php';
 session();
 reconnect_from_cookie();
+
 if(isset($_SESSION['auth'])){
   header('Location: index.php');
   exit;
 }
+
 require_once 'inc/db.php';
+
 
 if(!empty($_POST)) {
   $errors = array();
@@ -25,22 +28,22 @@ if(!empty($_POST)) {
         $req->execute([$_POST['username']]);
         $member = $req->fetch();
         if($member){
-          $errors['username'] = 'Ce pseudo est déjà utilisé';
+          $errors['username'] = 'Ce pseudo est déjà utilisé.';
         }
       }
 
 
       // Email
-      $email = htmlspecialchars(trim($_POST['email'])); // Voir si ok de ranger ca comme ca dans la bdd ?
+      $email = htmlspecialchars(trim($_POST['email'])); // Voir si ok de ranger ca comme ca dans la bdd ? (voir forgetpassword.php aussi)
 
       if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) || strlen($email) < 3 || strlen($email) > 255){
-        $errors['email'] = 'Email invalide';
+        $errors['email'] = 'Email invalide.';
       }else{
         $req = $pdo->prepare('SELECT id FROM member WHERE mail = ?');
         $req->execute([$_POST['email']]);
         $mail = $req->fetch();
         if($mail){
-          $errors['email'] = 'Un compte est déjà enregistré avec ce mail';
+          $errors['email'] = 'Un compte est déjà enregistré avec ce mail.';
         }
       }
 
@@ -58,7 +61,7 @@ if(!empty($_POST)) {
 
       // Password confirmation
       if($_POST['password'] != $_POST['password_confirm']){
-        $errors['password_confirm'] = 'Les mots de passes ne correspondent pas';
+        $errors['password_confirm'] = 'Les mots de passes ne correspondent pas.';
       }
 
 

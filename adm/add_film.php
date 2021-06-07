@@ -44,7 +44,7 @@ $errors = array();
             $actor = htmlspecialchars(trim($_POST['actor']));
             $add_by = $_SESSION['auth']->username;
             // Valid Characters
-            $filter_char = '/^[a-zA-Z0-9\.\…\?\!\,\;\'\’\:\-\+\éÉèÈàÀâÂûÛêÊùÙçÇïÏîÎôÔ\ ]*$/';
+            $filter_char = '/^[a-zA-Z0-9\.\…\?\!\,\;\'\’\:\-\+\(\)\éÉèÈàÀâÂûÛêÊùÙçÇïÏîÎôÔ\ ]*$/';
 
 
             // Title
