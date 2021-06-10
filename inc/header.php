@@ -1,9 +1,27 @@
-<?php
-    if(session_status() == PHP_SESSION_NONE){
-        session_start();
-    }
-?>
 <!DOCTYPE html>
+<?php require_once 'inc/db.php'; ?>
+<?php
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
+
+
+// SEARCH BAR
+if (!empty($_GET) && !empty($_GET['search'])) {
+    $search = "%".htmlspecialchars($_GET['search'])."%";
+    $film = $pdo->prepare("SELECT id, title FROM film WHERE title LIKE ? ORDER BY title ASC");
+    $film->execute([$search]);
+    if($film->rowCount() < 1){
+        $_SESSION['flash']['danger'] = 'Aucun contenu trouvé.';
+        header('Location: catalog.php');
+        exit;
+    }
+}
+
+
+?>
+
+
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -52,8 +70,8 @@
                         </div>
                     </div>
                     <!-- Search bar -->
-                    <form class="d-flex custom-rounded-nav">
-                        <input class="form-control border-0" style="background-color: var(--light-shadow); color: var(--bg-primary-color);" type="search" placeholder="Rechercher" aria-label="Rechercher">
+                    <form action="catalog.php" method="GET" class="d-flex custom-rounded-nav">
+                        <input class="form-control border-0" style="background-color: var(--light-shadow); color: var(--bg-primary-color);" type="search" name="search" placeholder="Rechercher" aria-label="Rechercher">
                         <button class="btn nav-btn" style="background-color: var(--light-shadow);" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search white-text" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>

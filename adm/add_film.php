@@ -32,7 +32,7 @@ $errors = array();
     // ADD FILM
     if(isset($_POST['add_film'])){
         // Fields not empty
-        if(empty($_POST['filmName']) || empty($_POST['url1']) || empty($_POST['release']) || empty($_POST['synopsis']) || empty($_POST['actor'])){
+        if(empty($_POST['filmName']) || empty($_POST['url1']) || empty($_POST['release']) || empty($_POST['synopsis']) || empty($_POST['actor']) || empty($_POST['genre'])){
             $errors['fields'] = 'Veuillez remplir tous les champs obligatoires.';
         }else{
             // Clean
@@ -42,9 +42,10 @@ $errors = array();
             $release = date('Y-m-d', strtotime($_POST['release']));
             $synopsis = htmlspecialchars(trim($_POST['synopsis']));
             $actor = htmlspecialchars(trim($_POST['actor']));
+            $genre = htmlspecialchars(trim($_POST['genre']));
             $add_by = $_SESSION['auth']->username;
             // Valid Characters
-            $filter_char = '/^[a-zA-Z0-9\.\…\?\!\,\;\'\’\:\-\+\(\)\éÉèÈàÀâÂûÛêÊùÙçÇïÏîÎôÔ\ ]*$/';
+            $filter_char = '/^[a-zA-Z0-9\.\…\?\!\,\;\'\’\:\-\+\(\)\éÉèÈàÀâÂûÛêÊùÙçÇïÏîÎôÔō\ ]*$/';
 
 
             // Title
@@ -62,6 +63,10 @@ $errors = array();
             $url2_verify = filter_var($_POST['url2'], FILTER_VALIDATE_URL) && preg_match('/^http(s|)\:\/\/[a-zA-Z0-9]+\.[a-zA-Z]+\/[a-zA-Z0-9_\/=?&-]*$/', $_POST['url2']);
             $url1_long = (strlen($url1) < 35 || strlen($url1) > 255);   $url1_longu = (strlen($url1) > 35 && strlen($url1) < 255);
             $url2_long = (strlen($url2) < 15 || strlen($url2) > 255);   $url2_longu = (strlen($url2) > 15 && strlen($url2) < 255);
+
+            if($url2 == ''){
+                $url2 = NULL;
+            }
 
             if((!$url1_verify || $url1_long) && ($url2 === NULL || ($url2_verify && $url2_longu))){
                 $errors['url'] = 'URL Uptostream invalide.';
@@ -98,6 +103,15 @@ $errors = array();
             }
 
 
+            // Genre
+            if(strlen($genre) > 30){
+                $errors['genre_longer'] = 'Le genre du film doit contenir maximum 30 caractères.';
+            }
+            if(!preg_match('/^[a-zA-Z\ \éÉèÈàÀâÂûÛêÊùÙçÇïÏîÎôÔ]*$/', $_POST['genre'])){
+                $errors['genre_char'] = 'Le genre contient un ou plusieurs caractère(s) invalide(s).';
+            }
+
+
             // ADD NEW FILM
             if($edit_mod === false){
                 // Miniature exist
@@ -111,7 +125,7 @@ $errors = array();
 
                 // Informations sent to db
                 if(empty($errors)){
-                    $req = $pdo->prepare('INSERT INTO film (title, url, url2, release_date, synopsis, actor, add_date, add_by) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)');
+                    $req = $pdo->prepare('INSERT INTO film (title, url, url2, release_date, synopsis, actor, genre, add_date, add_by) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?)');
                     $req->execute([
                         $film_name,
                         $url1,
@@ -119,6 +133,7 @@ $errors = array();
                         $release,
                         $synopsis,
                         $actor,
+                        $genre,
                         $add_by
                     ]);
                     // image upload
@@ -135,7 +150,7 @@ $errors = array();
 
                 // Informations sent to db
                 if(empty($errors)){
-                    $req = $pdo->prepare('UPDATE film SET title = ?, url = ?, url2 = ?, release_date = ?, synopsis = ?, actor = ?, edit_date = NOW(), edit_by = ? WHERE id = ?');
+                    $req = $pdo->prepare('UPDATE film SET title = ?, url = ?, url2 = ?, release_date = ?, synopsis = ?, actor = ?, genre = ?, edit_date = NOW(), edit_by = ? WHERE id = ?');
                     $req->execute([
                         $film_name,
                         $url1,
@@ -143,6 +158,7 @@ $errors = array();
                         $release,
                         $synopsis,
                         $actor,
+                        $genre,
                         $add_by,
                         $id_film
                     ]);
@@ -156,6 +172,8 @@ $errors = array();
 }
 
 
+// Genre
+$genre = mysqli_query($con, 'SELECT * FROM category ORDER BY genre');
 
 
 ?>
@@ -208,29 +226,45 @@ $errors = array();
         
             <form action="" class="d-flex row align-items-center py-3 px-2" method="POST" enctype="multipart/form-data">
                 <div class="row col-9">
+                    <!-- Title -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputFilmName" class="text-uppercase fw-bold fs-5 mb-1">Titre du film*</label>
                         <input type="text" name="filmName" class="form-control py-2" id="inputFilmName" placeholder="Nom du film" value="<?= $film->title; ?>">
                     </div>
+                    <!-- Url 1 -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputUrl1" class="text-uppercase fw-bold fs-5 mb-1">URL Uptobox*</label>
                         <input type="text" name="url1" class="form-control py-2" id="inputUrl1" placeholder="URL Uptobox" value="<?= $film->url; ?>">
                     </div>
+                    <!-- Url 2 -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputUrl2" class="text-uppercase fw-bold fs-5 mb-1">URL VeryStream</label>
                         <input type="text" name="url2" class="form-control py-2" id="inputUrl2" placeholder="URL VeryStream" value="<?= $film->url2; ?>">
                     </div>
+                    <!-- Release date -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputRelease" class="text-uppercase fw-bold fs-5 mb-1">Date de sortie*</label>
                         <input type="date" name="release" class="form-control py-2" id="inputRelease" value="<?= $film->release_date; ?>">
                     </div>
+                    <!-- Synopsys -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputSynospis" class="text-uppercase fw-bold fs-5 mb-1">Synopsis*</label>
-                        <textarea name="synopsis" class="form-control py-2" id="inputSynospis" placeholder="Synopsis"><?= $film->synopsis; ?></textarea>
+                        <textarea name="synopsis" class="form-control py-2" rows="5" id="inputSynospis" placeholder="Synopsis"><?= $film->synopsis; ?></textarea>
                     </div>
+                    <!-- Actor -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputActor" class="text-uppercase fw-bold fs-5 mb-1">Réalisateur(s) et Doubleurs*</label>
                         <input type="text" name="actor" class="form-control py-2" id="inputActor" placeholder="Réalisateur(s) et Doubleurs" value="<?= $film->actor; ?>">
+                    </div>
+                    <!-- Genre -->
+                    <div class="col-12 mb-3 ps-2 pe-1">
+                        <label for="inputType" class="text-uppercase fw-bold fs-5 mb-1">Genre du film*</label>
+                        <input class="form-control py-2" list="datalistOptions" name="genre" id="inputType" placeholder="Rechercher le genre du film..." value="<?= $film->genre; ?>">
+                        <datalist id="datalistOptions">
+                            <?php while($genres = mysqli_fetch_array($genre)): ?>
+                            <option value="<?php echo $genres['genre']; ?>">
+                            <?php endwhile; ?>
+                        </datalist>
                     </div>
                     
                     <!-- Add button -->
@@ -245,7 +279,7 @@ $errors = array();
                     <label for="inputeMiniature" class="text-uppercase fw-bold fs-5 mb-1">Miniature*</label><br>
                     <!-- MAX_FILE_SIZE must precede the file input field -->
                     <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
-                    <input type="file" name="miniature" id="inputeMiniature">
+                    <input type="file" class="form-control" name="miniature" id="inputeMiniature">
                 <?php else: ?>
                     <img src="../src/img/film/<?= $film->id; ?>.jpg" class="img-fluid shadow">
                 <?php endif; ?>

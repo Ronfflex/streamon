@@ -9,6 +9,3 @@ $username='root';
 $pass='root';
 $dbname='streamon';
 $con=mysqli_connect($host,$username,$pass,$dbname);
-if(!$con){
-    die('Could not Connect MySql Server:');
-}
