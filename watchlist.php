@@ -1,6 +1,10 @@
 <?php
 require 'inc/functions.php';
 logged_only();
+require_once 'inc/db.php';
+
+
+
 require 'inc/header.php';
 ?>
 
@@ -31,7 +35,12 @@ require 'inc/header.php';
 
 <main class="container-fluid extern-margin">
     <div class="row">
-        <!-- Card -->
+
+        <?php watchlist(); ?>
+
+
+
+        <!-- Card
         <div class="col-3 d-flex justify-content-center mt-5 mb-5">
             <div class="card" style="width: 30rem;">
                 <div class="miniature overflow-hidden">
@@ -61,6 +70,7 @@ require 'inc/header.php';
                 </a>
             </div>
         </div>
+        -->
     </div>
 </main>
 

@@ -70,7 +70,7 @@ if (!empty($_GET) && !empty($_GET['search'])) {
                         </div>
                     </div>
                     <!-- Search bar -->
-                    <form action="catalog.php" method="GET" class="d-flex custom-rounded-nav">
+                    <form action="catalog.php" method="GET" class="d-flex custom-rounded-nav me-2">
                         <input class="form-control border-0" style="background-color: var(--light-shadow); color: var(--bg-primary-color);" type="search" name="search" placeholder="Rechercher" aria-label="Rechercher">
                         <button class="btn nav-btn" style="background-color: var(--light-shadow);" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search white-text" viewBox="0 0 16 16">
@@ -80,39 +80,25 @@ if (!empty($_GET) && !empty($_GET['search'])) {
                     </form>
                 </div>
             </div>
-            
-            <!-- Notifications -->
-            <a href="#" class="ps-3 ms-3 nav-link rounded-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bell white-text" viewBox="0 0 16 16">
-                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
-                </svg>
-            </a>   
-            
-            <!-- Calendar -->
-            <a href="#" class="px-3 nav-link rounded-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-calendar4-week white-text" viewBox="0 0 16 16">
-                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v1h14V3a1 1 0 0 0-1-1H2zm13 3H1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5z"/>
-                    <path d="M11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-2 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
-                </svg>
-            </a>
-            
-            <!-- Bouton profil -->
-        <?php if(isset($_SESSION['auth'])): ?>
-            <button class="btn d-block border-0 me-2 d-flex align-items-center nav-link" id="menu-btn-right" type="button">
-                <p class="mb-0 me-2 fw-bold white-text"><?= $_SESSION['auth']->username; ?></p>
-                <img class="border border-2 border-dark rounded-circle" width="40px" height="40px" alt="photo de profil" src="../src/img/popular-today/violet-evergarden.jpg">
-            </button>
-        <?php else: ?>
-            <a href="../register.php" class="nav-link rounded-3 white-text">S'inscrire / Se connecter</a>
-        <?php endif; ?>
+                
+                <!-- Bouton profil -->
+            <?php if(isset($_SESSION['auth'])): ?>
+                <button class="btn d-block border-0 me-2 d-flex align-items-center nav-link" id="menu-btn-right" type="button">
+                    <p class="mb-0 me-2 fw-bold white-text"><?= $_SESSION['auth']->username; ?></p>
+                    <img class="border border-2 border-dark rounded-circle" width="40px" height="40px" alt="photo de profil" src="../src/img/popular-today/violet-evergarden.jpg">
+                </button>
+            <?php else: ?>
+                <a href="../register.php" class="nav-link rounded-3 white-text">S'inscrire / Se connecter</a>
+            <?php endif; ?>
+        </div>
     </nav>
 
 
     <!-- LEFT NAVBAR-->
     <div class="p-4 navbar-custom" id="sidebar">
         <!-- Search bar -->
-        <form class="d-flex mt-2 mb-5 custom-rounded-nav">
-            <input class="form-control border-0 py-3" style="background-color: var(--light-shadow); color: var(--bg-primary-color);" type="search" placeholder="Recherher" aria-label="Recherher">
+        <form action="catalog.php" method="GET" class="d-flex mt-2 mb-5 custom-rounded-nav">
+            <input class="form-control border-0 py-3" style="background-color: var(--light-shadow); color: var(--bg-primary-color);" type="search" name="search" placeholder="Recherher" aria-label="Recherher">
             <button class="btn nav-btn" style="background-color: var(--light-shadow);" type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search icone" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -147,15 +133,7 @@ if (!empty($_GET) && !empty($_GET['search'])) {
             </li>
             <li class="border-top my-2"></li>
             <li class="mb-1">
-                <a href="#" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Agenda</a>
-            </li>
-            <li class="border-top my-2"></li>
-            <li class="mb-1">
                 <a href="../discover.php" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Nos Offres</a>
-            </li>
-            <li class="border-top my-2"></li>
-            <li class="mb-1">
-                <a href="#" class="nav-link fw-bold ps-1 fs-5 text-uppercase">Communauté</a>
             </li>
             <li class="border-top my-2"></li>
             <li class="mt-4">

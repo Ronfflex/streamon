@@ -1,11 +1,13 @@
-<?php require 'inc/header.php'; ?>
-<?php require_once 'inc/db.php'; ?>
 <?php
+require 'inc/functions.php';
+require_once 'inc/db.php';
 
+// Latest releases
 $film = mysqli_query($con,'SELECT id, title FROM film ORDER BY add_date DESC LIMIT 6');
 
 
 
+require 'inc/header.php';
 ?>
 
     <!-- CAROUSEL -->
@@ -51,11 +53,11 @@ $film = mysqli_query($con,'SELECT id, title FROM film ORDER BY add_date DESC LIM
     
     <!-- SECTIONS -->
     <div class="container-fluid extern-margin">
-        <!-- Popular today -->
+        <!-- Latest releases -->
         <section>
             <div class="pt-5 d-flex justify-content-between purple-bg">
                 <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Derniers ajouts</h2>
-                <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
+                <button class="btn white-btn fw-bold mb-2 me-5" type="button" style="display: none;"></button>
             </div>
             <div class="row mx-0 px-5 pt-4 pb-5 mb-5 dark-bg">
                 <?php while($films = mysqli_fetch_array($film)): ?>
@@ -148,14 +150,9 @@ $film = mysqli_query($con,'SELECT id, title FROM film ORDER BY add_date DESC LIM
                         <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Ma Watchlist</h2>
                         <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
                     </div>
-                    <div class="row mx-0 px-5 pt-4 pb-5 dark-bg">
-                        <div class="col-4" style="visibility: hidden;">
-                            <a href="#" class="card m-3 border-0">
-                                <img src="src/img/popular-today/le-voyage-de-chihiro.jpg" class="shadow imgw" style="border-radius: 16px;" alt="Affiche du film Le voyage de Chihiro">
-                                <div class="card-body pb-2">
-                                    <p class="card-text text-center purple">Le voyage de Chihiro</p>
-                                </div>
-                            </a>
+                    <div class="row mx-0 px-5 pt-4 pb-5 dark-bg" style="min-height: 22rem;">
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-lg py-4 px-5 purple-btn"><a href="register.php" class="text-white">Ajouter des Animes à ma Watchlist</a></button>
                         </div>
                     </div>
                     <?php endif; ?>
@@ -169,17 +166,6 @@ $film = mysqli_query($con,'SELECT id, title FROM film ORDER BY add_date DESC LIM
                     <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Animes Populaires</h2>
                 </div>
                 <div class="mx-0 px-4 pt-3 pb-2 mb-5 dark-bg">
-                    <div class="row mb-4 mx-2 p-2 rounded-3 light-bg">
-                        <div class="col-4 d-flex px-0 align-items-center justify-content-center">
-                            <button type="button" class="btn grey-btn purple-btn-hover fw-bold w-100 mx-2">Semaine</button>
-                        </div>
-                        <div class="col-4 d-flex px-0 align-items-center justify-content-center">
-                            <button type="button" class="btn grey-btn purple-btn-hover fw-bold w-100 mx-2">Mois</button>
-                        </div>
-                        <div class="col-4 d-flex px-0 align-items-center justify-content-center">
-                            <button type="button" class="btn grey-btn purple-btn-hover fw-bold w-100 mx-2">Vie</button>
-                        </div>
-                    </div>
                     <div class="row my-4">
                         <div class="col-2 d-flex align-items-center justify-content-center">
                             <p class="text-center border border-3 rounded-3 p-2 mb-0 fw-bold color-border">1</p>
@@ -250,57 +236,10 @@ $film = mysqli_query($con,'SELECT id, title FROM film ORDER BY add_date DESC LIM
         <section>
             <div class="pt-5 d-flex justify-content-between purple-bg">
                 <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Ma Watchlist</h2>
-                <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
+                <button class="btn white-btn fw-bold mb-2 me-5" type="button"><a href="watchlist.php">Tout voir</a></button>
             </div>
-            <div class="row mx-0 px-5 pt-4 pb-5 dark-bg">
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/le-voyage-de-chihiro.jpg" class="shadow imgw" style="border-radius: 16px;" alt="Affiche du film Le voyage de Chihiro">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Le voyage de Chihiro</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/a-silent-voice.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche du film A Silent Voice">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">A Silent Voice</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/re-zero.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche de la série animée Re:Zero">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Re:Zero</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/the-promise-neverland.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche de la série animée The Promised Neverland">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">The Promised Neverland</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/violet-evergarden.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche du film Violet Evergarden">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Violet Evergarden</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/your-name.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche du film Your Name">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Your Name</p>
-                        </div>
-                    </a>
-                </div>
+            <div class="row mx-0 px-5 pt-4 pb-5 dark-bg" style="min-height: 22rem;">
+                <?php watchlist(); ?>
             </div>
         </section>
         <?php else: ?>

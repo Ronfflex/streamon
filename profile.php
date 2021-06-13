@@ -1,6 +1,23 @@
 <?php
 require 'inc/functions.php';
 logged_only();
+require_once 'inc/db.php';
+
+// Number of anime followed
+$id_user = $_SESSION['auth']->id;
+$req = $pdo->prepare('SELECT film_id FROM member_fav WHERE member_id = ?');
+$req->execute([$id_user]);
+
+if($req->rowCount() > 0){
+    while($films = $req->fetch()){
+        $many = $i++;
+    }
+} else {
+    $many = -1;
+}
+
+
+
 require 'inc/header.php';
 ?>
 
@@ -16,7 +33,7 @@ require 'inc/header.php';
                         <?php if($_SESSION['auth']->status == 1): ?><p class="fs-6 mb-2 gold-text">Offre prenium</p><?php endif; ?>
                         <p class="fs-5 fw-bold mb-2">Membre depuis le <?= date_form() ?></p>
                         <div class="d-flex justify-content-between">
-                            <p class="fs-5 fw-bold">Suit actuellement <span class="purple">XX</span> Animes</p>
+                            <p class="fs-5 fw-bold">Suit actuellement <span class="purple"><?php echo ($many + 1); ?></span> Animes</p>
                             <p class="fs-5 fw-bold"><span class="purple">XX</span> Jetons</p>
                         </div>
                     </div>
@@ -33,67 +50,24 @@ require 'inc/header.php';
 
 
     <main class="container-fluid extern-margin">
-        <!-- Followed series -->
-        <section>
+        <!-- Watchlsit -->
+        <section class="mb-5">
             <div class="pt-5 d-flex justify-content-between purple-bg">
-                <h2 class="w-25 ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Série suivie</h2>
-                <button class="btn white-btn fw-bold mb-2 me-5" type="button">Tout voir</button>
+                <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Watchlist</h2>
+                <button class="btn white-btn fw-bold mb-2 me-5" type="button"><a href="watchlist.php">Tout voir</a></button>
             </div>
-            <div class="row mx-0 px-5 pt-4 pb-5 mb-5 dark-bg">
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/le-voyage-de-chihiro.jpg" class="shadow imgw" style="border-radius: 16px;" alt="Affiche du film Le voyage de Chihiro">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Le voyage de Chihiro</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/a-silent-voice.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche du film A Silent Voice">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">A Silent Voice</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/mon-voisin-totoro.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche du film Mon voisin Totoro">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Mon voisin Totoro</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/re-zero.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche de la série animée Re:Zero">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Re:Zero</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/the-promise-neverland.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche de la série animée The Promised Neverland">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">The Promised Neverland</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="#" class="card m-3 border-0 dark-bg">
-                        <img src="src/img/popular-today/violet-evergarden.jpg" class="shadow imgw" style="border-radius: 16px" alt="Affiche du film Violet Evergarden">
-                        <div class="card-body pb-2">
-                            <p class="card-text text-center purple">Violet Evergarden</p>
-                        </div>
-                    </a>
-                </div>
+            <div class="row mx-0 px-5 pt-4 pb-5 dark-bg" style="min-height: 22rem;">
+                <!-- Show Watchlsit of the user -->
+                <?php watchlist(); ?>
             </div>
         </section>
+
+
         <!-- Last activities -->
         <section>
-            <div class="pt-5 purple-bg">
-                <h2 class="w-25 ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Dernière activités</h2>
+            <div class="pt-5 d-flex justify-content-between purple-bg">
+                <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Dernières activités</h2>
+                <button class="btn white-btn fw-bold mb-2 me-5" style="display: none;" type="button"></button>
             </div>
             <div class="row mx-0 px-5 pt-4 pb-5 mb-5 dark-bg">
                 <div class="col">
@@ -146,10 +120,13 @@ require 'inc/header.php';
                 </div>
             </div>
         </section>
+
+
         <!-- Resume viewing -->
         <section>
-            <div class="pt-5 purple-bg">
-                <h2 class="w-25 ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Reprendre le visionage</h2>
+            <div class="pt-5 d-flex justify-content-between purple-bg">
+                <h2 class="ms-5 mb-0 custom-rounded px-3 py-2 fs-4 fw-bold dark-bg text">Reprendre le visionnage</h2>
+                <button class="btn white-btn fw-bold mb-2 me-5" style="display: none;" type="button"></button>
             </div>
             <div class="row mx-0 px-5 pt-4 pb-5 mb-5 dark-bg">
                 <!-- card -->

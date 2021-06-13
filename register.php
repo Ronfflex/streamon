@@ -160,8 +160,8 @@ if(!empty($_POST)) {
     
     <!-- FORMS -->
     <div class="container-fluid w-75 mx-auto border border-secondary dark-bg" style="margin: 22.05vh 0; padding: 4rem 0;">
-        <!-- REGISTER -->
         <div class="row">
+            <!-- REGISTER -->
             <main class="col-8 px-5 border-end">
                 <form action="" method="POST">
                     <h1 class="mb-2 fw-bold fs-1">S'inscrire gratuitement</h1>
@@ -224,6 +224,7 @@ if(!empty($_POST)) {
             </main>
         </div>
     </div>
+
 
 
 <?php require 'inc/footer.php'; ?>

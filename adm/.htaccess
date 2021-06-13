@@ -1,0 +1,31 @@
+AuthUserFile "/var/www/html/adm/.htpasswd"
+#AuthUserFile "/localhost/adm/.htpasswd"
+AuthName "Restricted access"
+AuthType Basic
+Require valid-user
+
+
+# XSS
+RewriteEngine on
+RewriteCond %{HTTPS} !on
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+AddDefaultCharset UTF-8
+
+#Custom 400 errors
+ErrorDocument 400 https://streamon.fr/error/400.php
+
+#Custom 401 errors
+ErrorDocument 401 https://streamonr.fr/error/401.php
+
+#Custom 403 errors
+ErrorDocument 403 https://streamon.fr/error/403.php
+
+#Custom 404 errors
+ErrorDocument 404 https://streamon.fr/error/404.php
+
+#Custom 500 errors
+ErrorDocument 500 https://streamon.fr/error/500.php

@@ -70,3 +70,41 @@ function date_form(){
     setlocale(LC_TIME, 'fr_FR.utf8','fra');
     echo $confirmed_date = strftime('%d %B %Y', strtotime($confirmed_at));
 }
+
+
+// Watchlist
+function watchlist(){
+    require_once 'inc/db.php';
+    if(!isset($pdo)){
+        global $pdo;
+    }
+    // Show Watchlsit of the user
+    $id_user = $_SESSION['auth']->id;
+    $req = $pdo->prepare('SELECT film_id FROM member_fav WHERE member_id = ?');
+    $req->execute([$id_user]);
+
+    if($req->rowCount() > 0){
+        while($films = $req->fetch()){
+            $title = $pdo->prepare('SELECT title, id FROM film WHERE id = ?');
+            $title->execute([$films->film_id]); ?>
+            <?php while($titles = $title->fetch()){ ?>
+            <div class="col-2">
+                <a href="../anime.php?id_film=<?= $titles->id; ?>" class="card m-3 border-0 bg-transparent">
+                    <img src="src/img/film/<?= $titles->id; ?>.jpg" class="shadow imgw mx-auto" style="border-radius: 16px;" alt="Affiche du film <?= $titles->title; ?>.">
+                    <div class="card-body pb-2">
+                        <p class="card-text text-center purple"><?= $titles->title; ?></p>
+                    </div>
+                </a>
+            </div>
+    <?php   }
+        }
+    }else{
+        ?>
+        <div class="col-12 d-flex align-items-center justify-content-center">
+            <button class="btn btn-lg py-4 px-5 purple-btn"><a href="catalog.php" class="text-white">Ajouter des Animes à ma Watchlist</a></button>
+        </div>
+        <?php
+    }
+}
+
+?>
