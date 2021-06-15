@@ -43,10 +43,17 @@ $film = mysqli_query($con,'SELECT * FROM film ORDER BY add_date DESC LIMIT 10');
 
 
     <div class="extern-margin bg-light" style="height: 100vh">
-        <h1 class="fs-1 mb-4 text-uppercase fw-bold">Bonjour admin <?= $_SESSION['auth']->username; ?></h1>
-        <a href="../index.php" class="btn btn-primary mb-5">Acceuil</a>
-        <a href="add_film.php" class="btn btn-primary mb-5">Ajouter un film</a>
-        <a href="add_series.php" class="btn btn-primary mb-5">Ajouter une série</a>
+        <div class="d-flex justify-content-between">
+            <div>
+                <h1 class="fs-1 mb-4 text-uppercase fw-bold">Bonjour admin <?= $_SESSION['auth']->username; ?></h1>
+                <a href="../index.php" class="btn btn-primary mb-5">Acceuil</a>
+                <a href="add_film.php" class="btn btn-primary mb-5">Ajouter un film</a>
+                <a href="add_series.php" class="btn btn-primary mb-5">Ajouter une série</a>
+            </div>
+            <div>
+                <p>Actuellement <?php echo $user_nbr; ?> utilisateurs<?php if($user_nbr != 1) ?> en ligne<br /><p>
+            </div>
+        </div>
 
 
         <!-- SHOW MEMBERS -->

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+      <link rel="stylesheet" type="text/css" href="styles.css" >
+
+    <title>CAPTCHA</title>
+
+     <script type="text/javascript">
+
+     pos=Array ('1.PNG','2.PNG','3.PNG','4.PNG','5.PNG','6.PNG','7.PNG','8.PNG','9.PNG' );
+     rnd=Array ('rien','rien','rien','rien','rien','rien','rien','rien','rien');
+     click=0;
+     elemPos=null;
+     elemVal=null;
+
+     function alea(){ // rend un nombre aleatoire entre 0 et 8
+     return Math.floor(Math.random() *9);
+     }
+
+     function win() { for (var i=0; i<9 ;i++) if((document.images[i].src).indexOf(pos[i],0)==-1)return false; return true;} //condition de victoire (de souvenir fonctionne pas)
+
+     function test(a){ // cette fct test permet de verifier que tu met pas 2 fois la meme valeur dans ton tableau
+       console.log('test',a)
+     for (var i = 0; i < 9; i++) {
+       console.log(rnd[i]);
+     if (rnd[i]==a) return true;
+     }
+     return false;
+     }
+
+     function start() { // fct qui change l'ordre des images
+      rnd=Array ('rien','rien','rien','rien','rien','rien','rien','rien','rien');
+      for (var i = 0; i < 9; i++) {
+        var j=alea();
+      while (test(pos[j])) {
+        j=alea();
+      }
+      rnd[i]=pos[j];
+      }
+      for (var i = 0; i < 9; i++) {
+        document.images[i].src=rnd[i]; 
+      }
+     }
+
+     function dep(id) { // fct qui ce lance quand tu click sur une image
+       let imgSrc=document.images[id-1].src.substr(32); // recup de la source de l'image clické a partir du chemin (fait attention c'est pas super propre le chemin depend du pc)
+       console.log(document.images[id-1].src, imgSrc, id); // log
+       if (click == 0) { // click == 0, premier click sur une image
+         console.log('click 0'); //log
+         elemPos=id-1; // stockage de la position de l'image clické
+         elemVal= imgSrc; // valeur de 
+         click = 1; // stockage du fait que l'on a deja gérer le 1er click
+         return;
+
+       }
+        if (click == 1) { // click == 1, deuxieme click sur une image
+         console.log('click 1'); //log
+         document.images[elemPos].src = imgSrc; //on donne au 1er block clické l'image du 2eme block clické
+         document.images[id-1].src = elemVal; //on donne au 2eme block clické l'image du 1er block clické
+         click = 0; // remetre toutes tes valeurs comme qu debut pour le prochain couple de click
+         elemPos = null;
+         elemVal = null
+         if(win()){  // c'est la que tu verifie si c 'est fini
+           var str='<img src="bravo.png"  width="300"  heigth="300">'
+           document.getElementById('toto').innerHTML=str;
+
+         }
+         return;
+       }
+
+     }
+
+     </script>
+</head>
+<body>
+    <div id="toto">
+       <table cellpadding="0" cellSpadding="0">
+
+<tr>
+<td><a href="#" onclick="dep(1)"><img src="1.PNG"></a></td>
+<td><a href="#" onclick="dep(2)"><img src="2.PNG"></a></td>
+<td><a href="#" onclick="dep(3)"><img src="3.PNG"></a></td>
+</tr><tr>
+<td><a href="#" onclick="dep(4)"><img src="4.PNG"></a></td>
+<td><a href="#" onclick="dep(5)"><img src="5.PNG"></a></td>
+<td><a href="#" onclick="dep(6)"><img src="6.PNG"></a></td>
+</tr><tr>
+<td><a href="#" onclick="dep(7)"><img src="7.PNG"></a></td>
+<td><a href="#" onclick="dep(8)"><img src="8.PNG"></a></td>
+<td><a href="#" onclick="dep(9)"><img src="9.PNG"></a></td>
+</tr>
+</table>
+</div>
+<div id="but" <form> <input type="button" value="lecture aléatoire" onclick="start()" id="but1" <font id="but2">
+
+
+    </div>
+  </body>
+</html>
