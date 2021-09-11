@@ -229,37 +229,37 @@ $genre = mysqli_query($con, 'SELECT * FROM category ORDER BY genre');
                     <!-- Title -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputFilmName" class="text-uppercase fw-bold fs-5 mb-1">Titre du film*</label>
-                        <input type="text" name="filmName" class="form-control py-2" id="inputFilmName" placeholder="Nom du film" value="<?= $film->title; ?>">
+                        <input type="text" name="filmName" class="form-control py-2" id="inputFilmName" placeholder="Nom du film" value="<?php if($edit_mod === true){ ?><?= $film->title; ?><?php } ?>">
                     </div>
                     <!-- Url 1 -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputUrl1" class="text-uppercase fw-bold fs-5 mb-1">URL Uptobox*</label>
-                        <input type="text" name="url1" class="form-control py-2" id="inputUrl1" placeholder="URL Uptobox" value="<?= $film->url; ?>">
+                        <input type="text" name="url1" class="form-control py-2" id="inputUrl1" placeholder="URL Uptobox" value="<?php if($edit_mod === true){ ?><?= $film->url; ?><?php } ?>">
                     </div>
                     <!-- Url 2 -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputUrl2" class="text-uppercase fw-bold fs-5 mb-1">URL VeryStream</label>
-                        <input type="text" name="url2" class="form-control py-2" id="inputUrl2" placeholder="URL VeryStream" value="<?= $film->url2; ?>">
+                        <input type="text" name="url2" class="form-control py-2" id="inputUrl2" placeholder="URL VeryStream" value="<?php if($edit_mod === true){ ?><?= $film->url2; ?><?php } ?>">
                     </div>
                     <!-- Release date -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputRelease" class="text-uppercase fw-bold fs-5 mb-1">Date de sortie*</label>
-                        <input type="date" name="release" class="form-control py-2" id="inputRelease" value="<?= $film->release_date; ?>">
+                        <input type="date" name="release" class="form-control py-2" id="inputRelease" value="<?php if($edit_mod === true){ ?><?= $film->release_date; ?><?php } ?>">
                     </div>
                     <!-- Synopsys -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputSynospis" class="text-uppercase fw-bold fs-5 mb-1">Synopsis*</label>
-                        <textarea name="synopsis" class="form-control py-2" rows="5" id="inputSynospis" placeholder="Synopsis"><?= $film->synopsis; ?></textarea>
+                        <textarea name="synopsis" class="form-control py-2" rows="5" id="inputSynospis" placeholder="Synopsis"><?php if($edit_mod === true){ ?><?= $film->synopsis; ?><?php } ?></textarea>
                     </div>
                     <!-- Actor -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputActor" class="text-uppercase fw-bold fs-5 mb-1">Réalisateur(s) et Doubleurs*</label>
-                        <input type="text" name="actor" class="form-control py-2" id="inputActor" placeholder="Réalisateur(s) et Doubleurs" value="<?= $film->actor; ?>">
+                        <input type="text" name="actor" class="form-control py-2" id="inputActor" placeholder="Réalisateur(s) et Doubleurs" value="<?php if($edit_mod === true){ ?><?= $film->actor; ?><?php } ?>">
                     </div>
                     <!-- Genre -->
                     <div class="col-12 mb-3 ps-2 pe-1">
                         <label for="inputType" class="text-uppercase fw-bold fs-5 mb-1">Genre du film*</label>
-                        <input class="form-control py-2" list="datalistOptions" name="genre" id="inputType" placeholder="Rechercher le genre du film..." value="<?= $film->genre; ?>">
+                        <input class="form-control py-2" list="datalistOptions" name="genre" id="inputType" placeholder="Rechercher le genre du film..." value="<?php if($edit_mod === true){ ?><?= $film->genre; ?><?php } ?>">
                         <datalist id="datalistOptions">
                             <?php while($genres = mysqli_fetch_array($genre)): ?>
                             <option value="<?php echo $genres['genre']; ?>">

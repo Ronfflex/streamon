@@ -4,12 +4,12 @@ logged_only();
 require_once 'inc/db.php';
 
 
-// Add to favorite
+// Delete of favorites
 if(!empty($_GET) && !empty($_GET['id_film'])){
     $id_film = htmlspecialchars($_GET['id_film']);
     $req = $pdo->prepare('SELECT * FROM film WHERE id = ?');
     $req->execute([$id_film]);
-    // Check if film to add exist
+    // Check if film to delete exist
     if($req->rowCount() == 1){
         $id_user = $_SESSION['auth']->id;
         $fav = $pdo->prepare('DELETE FROM member_fav WHERE film_id = ? AND member_id = ?');
