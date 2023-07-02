@@ -112,22 +112,7 @@ CREATE TABLE `member` (
 --
 
 INSERT INTO `member` (`id`, `username`, `mail`, `password`, `confirmation_token`, `confirmed_at`, `reset_token`, `reset_at`, `remember_token`, `status`, `is_admin`) VALUES
-(14, 'Ronflex', 'aiglevisnky@gmail.com', '$2y$10$Gx7f7BNtGSv0zdQJdKY6Rutskj7G2JYIvZ942/mfCCiC.KhprDnau', NULL, '2021-04-22 22:03:27', 'g5EgN3CTzSkyFzmZQmyxXc51qxAF0ggNSzo1vJqfRartzlUVuDlEZaj90JJv', '2021-06-07 23:32:08', '3LqY4kvp57ERCsKh98NpswFU45jPcqemzv9vZAUBGe9r9mgiU0sXbfHrPYelnVxlK8WPBcn50CfK2gx4WJBejtwj84fC1p7hdJqVO5XTm5KQlNdZOTlBmK6xEHsP5Vb03CTIzqHU8AMBqwTDd1R041Lp2VfS9FyJeYGI3xS3HYfufCVpPWEUMV33BDMHVhG2nNSxTYI2tSmXcf752Of3yluwK88MHJr2lW9aRQMHcLQwwdFVdwCyrI3Wsd', 1, 1),
-(16, 'Ronflexxx', 'aigleviszzznky@gmail.com', '$2y$10$SGiCg6tTG2dQd.1Zw642/uGKEILLcPtSJnD./mj7gmGYDGT846Gza', NULL, '2021-04-23 02:16:00', NULL, NULL, NULL, 0, 0),
-(18, 'ardfsfsfe', 'dazrrfs@gmzil.com', '$2y$10$Wg1zkoGcUR.Wg1a6OHCOp.rRX4sZw3YQbJt8H0foNnHTC4bYCNMXu', NULL, '2021-05-20 00:56:44', NULL, NULL, NULL, 0, 0),
-(19, 'Azerty1234', 'Azerty1234!@dkffjkmf.com', '$2y$10$5IXI.o7s0l683URw/tm7N.WWz53y5J0l7sxeyPKukCtGNXTh.OErK', NULL, '2021-05-24 17:50:50', NULL, NULL, NULL, 0, 0),
-(20, 'zrrzrz', 'Azerty123!!@gmtia.com', '$2y$10$c3PZth/jlt1lQD8Y89/P5.NeLXURkCK0Pmt4VlmSJVOzuv9uXICJW', NULL, '2021-05-21 01:10:34', NULL, NULL, NULL, 0, 0),
-(21, 'Azertyu1', 'Azertyu1!!@gmail.com', '$2y$10$.h5yhBOf8Vg490IDAwFQY.d35UNPyvWurCX/YG3grHmc4mb4OnMa2', 'eGNEfOrfABDddRmDhQ0IjKHhJogroyMJjcOQFyOOjlXQn254TTGyNDaSvCUV', NULL, NULL, NULL, NULL, 0, 0),
-(23, 'Identifiant15', 'Identifiant15@gmail.com', '$2y$10$KcDGL/9SG28KEVAJ53R.iOreqAUSo7y11tHgZKz4hyqG4Yik7SREy', 'ezkNq7q0bsWk4sdDcLhtRHkBe5W6WRBDzEVvA8SSydJ7s3bwPQPwBu2m5LlI', NULL, NULL, NULL, NULL, 0, 0),
-(24, 'Identifiant111', 'Identifiant111!@gmail.com', '$2y$10$1Cw83Fnzzzc3yxFQqTKzJeJbFNvqr26X63dfDObYrxpbx56VGTDfq', 'BANNED', NULL, NULL, NULL, NULL, 0, 0),
-(25, 'Identiaidnfkj14', 'Identiaidnfkj14@gmail.com', '$2y$10$v9CYH.h8LfMMiXBDm5zUJ.WpdygbRDyavkPDKdgsZguf.UqZ2Qa/.', NULL, '2021-05-30 18:13:11', NULL, NULL, NULL, 0, 0),
-(28, 'Pseudo1234', 'Pseudo1234!@gmail.com', '$2y$10$.mq07kNWTKgc3V84GndQHO3KGGUPU323Oy2B.delzkySdPK9Kt2Ly', 'BANNED', NULL, NULL, NULL, NULL, 0, 0),
-(29, 'Pseudo1235', 'Pseudo1235!@gmail.com', '$2y$10$opMLGrbJoP37gh3OWMmpo.vZrwU6I7rp//uJ9T.sJ8GhiFXHcDKXe', 'eEyTmPs11YaUqLV1PXoSsVAGMoBt9aSkr8bvK1pHaNEljStSYhZdCybFQ9Vk', NULL, NULL, NULL, NULL, 0, 0),
-(30, 'Ripbouboul1', 'Ripbouboul1!@gmail.com', '$2y$10$7K3daNahmabbCxeZW2jsw.k1on9l5n0ta5k8eLNpFiq5V9HK6t2V6', NULL, '2021-05-30 18:11:47', NULL, NULL, NULL, 0, 1),
-(31, 'Ronflexx', 'aiglevisnky@gmail.comm', '$2y$10$PeKrl1/rnEzYbBeMl589l.Y8tdWL14dtmR4XN7ITu5i5e3RGZtrk6', 'tXMTxmXf7gRYEo37lTj9GNdWnmkwYobOmAIVhcGo75B11yqV2l4d2gcMsFAd', NULL, NULL, NULL, NULL, 0, 0),
-(33, 'Ronflexdsqdq', 'aiglevisnky@gmail.comqdsdqz', '$2y$10$7IqyCh01.yd7ouQEA0m6puipVtiPJprq4Ex5pM9klznEVD2SB3tzW', 'BANNED', NULL, NULL, NULL, NULL, 0, 0),
-(34, 'Ronflexdsfszz', 'aiglevisnky@gmail.comdsdf', '$2y$10$OSkQUp.qFkbnhkJ.vtdo..2Zo4bGpplURY2jfdH6QfepaBT5C5.Ny', NULL, '2021-06-13 23:55:48', 'z769VvsiIlOqWdgTnC4msQTMJHU14lBKQqrZkrduJ9IZKxJCs1Il8itiK5UW', '2021-06-15 17:02:52', NULL, 0, 0),
-(35, 'Azerty123456_', 'azerty123456@gmail.com', '$2y$10$cylxVLj.6aVWCNHpuqIEru29.FD2wwlTdbCcVDJrCLxSXer8iH7n2', NULL, '2021-06-13 23:42:20', NULL, NULL, 'feUUJSUDwLOH3NSCN5d78q5iiXn7k4mRL9x6RbhA00TkUrYQnDgep1MjCrTAp5EuoFKDOE1Hmq6AN27dgBSPQoA6qsg1dYGr5WTXgKpbmQIEBHp5lOV9jE4VojfnC8xWlY13v6t479x2Scdipzjpmvu2etOXgvni2bvsmT2hCKhAKR6K8DHdFdeNxbUbJvLr3oOfoohdeZOWbrBANqLgExV4gXa6IzmaQGL6byutjnULI48NwbDHVaIK2k', 0, 0);
+(18, 'ardfsfsfe', 'dazrrfs@gmzil.com', '$2y$10$Wg1zkoGcUR.Wg1a6OHCOp.rRX4sZw3YQbJt8H0foNdqsdqnHTC4bYCNMXu', NULL, '2021-05-20 00:56:44', NULL, NULL, NULL, 0, 0),
 
 -- --------------------------------------------------------
 
